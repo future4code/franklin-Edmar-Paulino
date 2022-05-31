@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useState } from 'react'
 
 const CommentContainer = styled.div`
     display: flex;
@@ -12,12 +13,17 @@ const InputComentario = styled.input`
     margin-right: 5px;
 `
 export function SecaoComentario(props) {
+	const [comentario, setComentario] = useState('');
+	const imprimirComentario = (event) => {
+		setComentario(event.target.value)
+		console.log(comentario)
+	}
 	return (
 		<CommentContainer>
 			<InputComentario
 				placeholder={'Comentário'}
-				value={''}
-				onChange={props.onChangeComentario}
+				value={comentario}
+				onChange={imprimirComentario}
 			/>
 			<button onClick={props.aoEnviar}>Enviar</button>
 		</CommentContainer>
