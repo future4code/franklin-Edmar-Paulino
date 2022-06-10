@@ -1,14 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { preProcessFile } from 'typescript'
 import './styles.css'
 
 const TarefaList = styled.ul`
   padding: 0;
-  width: 200px;
+  width: 900px;
+  display: flex;
+  flex-direction: row;
+  justify-content: ${({ exibe }) => (exibe ? "space-between" : "center")};
+`
+
+const TarefasContainer = styled.div`
+  width: 50%;
+  height: auto;
+  margin: 30px;
+`
+
+const TarefaContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  height: auto;
 `
 
 const Tarefa = styled.li`
   text-align: left;
+  margin: 10px;
   text-decoration: ${({ completa }) => (completa ? 'line-through' : 'none')};
 `
 
@@ -21,20 +41,28 @@ const InputsContainer = styled.div`
 function App() {
   const [tarefas, setTarefa] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [filtro, setFiltro] = useState("")
+  const [firstRender, setFirstRender] = useState(true);
+
+  const [exibePendentes, setExibePendentes] = useState(true);
+  const [exibeCompletadas, setExibeCompletadas] = useState(true);
 
   useEffect(
     () => {
-
+      if (!firstRender) {
+        const tarefasJson = JSON.stringify(tarefas);
+        localStorage.setItem("tarefas", tarefasJson);
+      }
     },
-    []
+    [tarefas]
   );
 
   useEffect(
     () => {
-
+      const tarefasJson = localStorage.getItem("tarefas");
+      tarefasJson ? setTarefa(JSON.parse(tarefasJson)) : setTarefa([])
+      setFirstRender(false);
     },
-    [inputValue]
+    []
   );
 
   const onChangeInput = (event) => {
@@ -58,8 +86,11 @@ function App() {
     criaTarefa();
   }
 
+  const removeTodasAsTarefas = () => {
+    setTarefa([]);
+  }
+
   const selectTarefa = (id) => {
-    console.log(id)
     const tarefasAtualizadas = tarefas.map((tarefa) => {
       if (tarefa.id !== id) return tarefa;
       tarefa.completa = !tarefa.completa;
@@ -68,19 +99,56 @@ function App() {
     setTarefa(tarefasAtualizadas);
   }
 
-  const onChangeFilter = (event) => {
-    setFiltro(event.target.value)
+  const removeTarefa = (id) => {
+    const tarefasAtualizadas = tarefas.filter((tarefa) => {
+      return tarefa.id !== id;
+    });
+    setTarefa(tarefasAtualizadas);
   }
 
-  const listaFiltrada = tarefas.filter(tarefa => {
-    switch (filtro) {
+  const onChangeFilter = (event) => {
+    switch (event.target.value) {
       case 'pendentes':
-        return !tarefa.completa
+        setExibePendentes(true);
+        setExibeCompletadas(false);
+        break;
       case 'completas':
-        return tarefa.completa
+        setExibeCompletadas(true);
+        setExibePendentes(false);
+        break;
       default:
-        return true
+        setExibePendentes(true);
+        setExibeCompletadas(true);
     }
+  }
+
+  const exibeLista = (lista) => {
+    return (
+      <TarefasContainer>
+        <h3>Tarefas Pendentes</h3>
+        {lista.map(tarefa => {
+          return (
+            <TarefaContainer>
+              <Tarefa
+                completa={tarefa.completa}
+                onClick={() => selectTarefa(tarefa.id)}
+              >
+                {tarefa.texto}
+              </Tarefa>
+              <button onClick={() => removeTarefa(tarefa.id)}>Remover</button>
+            </TarefaContainer>
+          )
+        })}
+      </TarefasContainer>
+    )
+  }
+
+  const listaDeTarefasPendentes = tarefas.filter((tarefa) => {
+    return tarefa.completa === false;
+  });
+
+  const listaDeTarefasCompletadas = tarefas.filter((tarefa) => {
+    return tarefa.completa === true;
   });
 
 
@@ -90,32 +158,23 @@ function App() {
       <InputsContainer>
         <input value={inputValue} onChange={onChangeInput} onKeyDown={criaTarefaComEnter} />
         <button onClick={criaTarefa}>Adicionar</button>
+        <button onClick={removeTodasAsTarefas}>Remover tarefas</button>
       </InputsContainer>
       <br />
-
       <InputsContainer>
         <label>Filtro</label>
-        <select value={filtro} onChange={onChangeFilter}>
+        <select onChange={onChangeFilter}>
           <option value="">Nenhum</option>
           <option value="pendentes">Pendentes</option>
           <option value="completas">Completas</option>
         </select>
       </InputsContainer>
-      <TarefaList>
-        {listaFiltrada.map(tarefa => {
-          return (
-            <Tarefa
-              completa={tarefa.completa}
-              onClick={() => selectTarefa(tarefa.id)}
-            >
-              {tarefa.texto}
-            </Tarefa>
-          )
-        })}
+      <TarefaList exibe={exibePendentes && exibeCompletadas}>
+        {exibePendentes ? exibeLista(listaDeTarefasPendentes) : ""}
+        {exibeCompletadas ? exibeLista(listaDeTarefasCompletadas) : ""}
       </TarefaList>
     </div>
   )
 }
-
 
 export default App
