@@ -5,6 +5,7 @@ import useRequestData from "../../hooks/useRequestData"
 import { BASE_URL } from "../../constants/urls"
 import { RecipeContainer, RecipeImage, ScreenContainer } from "./styled"
 import { Typography } from "@mui/material"
+import Loading from "../../components/Loading/Loading"
 
 function RecipeDetailPage() {
     useProtectedPage()
@@ -14,11 +15,11 @@ function RecipeDetailPage() {
     console.log(recipe)
     return (
         <ScreenContainer>
-            { recipe && <RecipeContainer>
+            { recipe ? <RecipeContainer>
                 <RecipeImage src={recipe.image}/>
                 <Typography gutterBottom align={"center"} variant={"h5"} color={"primary"}>{recipe.title}</Typography>
                 <Typography align={"center"}>{recipe.description}</Typography>
-            </RecipeContainer> }
+            </RecipeContainer> : <Loading />}
         </ScreenContainer>
     )
 }
