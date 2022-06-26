@@ -4,12 +4,12 @@ import logo from "../../assets/logo.png"
 import SignUpForm from "./SignUpForm"
 import useUnprotectedPage from "../../hooks/useUnprotectedPage"
 
-function SignUpPage() {
+function SignUpPage({ setRightButtonText }) {
     useUnprotectedPage()
     return (
         <ScreenContainer>
             <LogoImage src={logo} />
-            <SignUpForm />
+            <SignUpForm setRightButtonText={setRightButtonText} />
         </ScreenContainer>
     )
 }

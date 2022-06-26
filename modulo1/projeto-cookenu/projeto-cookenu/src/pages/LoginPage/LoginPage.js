@@ -7,13 +7,13 @@ import { goToSignUp } from "../../routes/coordinator"
 import { useNavigate } from "react-router-dom"
 import useUnprotectedPage from "../../hooks/useUnprotectedPage"
 
-function LoginPage() {
+function LoginPage({ setRightButtonText }) {
     useUnprotectedPage()
     const navigate = useNavigate()
     return (
         <ScreenContainer>
             <LogoImage src={logo} />
-            <LoginForm />
+            <LoginForm setRightButtonText={setRightButtonText} />
             <SignUpButtonContainer>
                 <Button
                     type={"submit"}
