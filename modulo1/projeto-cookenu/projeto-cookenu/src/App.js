@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import Router from "./routes/Router"
+import { ThemeProvider } from "@mui/material/styles"
+import theme from "./constants/theme"
+
+// instalado material ui v5
+// npm install @mui/material @emotion/react @emotion/styled
+// npm install @mui/icons-material
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <Router />
+        </ThemeProvider>
+    )
 }
 
-export default App;
+export default App
