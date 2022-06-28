@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
 function ApplicationFormPage() {
     return (
         <div>
 
         </div>
-    );
+    )
 }
 
-export default ApplicationFormPage;
+export default ApplicationFormPage

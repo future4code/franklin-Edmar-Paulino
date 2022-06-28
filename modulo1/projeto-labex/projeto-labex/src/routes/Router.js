@@ -1,14 +1,14 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AdminHomePage from "../components/AdminHomePage";
-import ApplicationFormPage from "../components/ApplicationFormPage";
-import CreateTripPage from "../components/CreateTripPage";
-import HomePage from "../components/HomePage";
-import ListTripsPage from "../components/ListTripsPage";
-import LoginPage from "../components/LoginPage";
-import TripDetailsPage from "../components/TripDetailsPage";
+import React from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import AdminHomePage from "../pages/AdminHomePage/AdminHomePage"
+import ApplicationFormPage from "../pages/ApplicationFormPage/ApplicationFormPage"
+import CreateTripPage from "../pages/CreateTripPage/CreateTripPage"
+import HomePage from "../pages/HomePage/HomePage"
+import ListTripsPage from "../pages/ListTripsPage/ListTripsPage"
+import LoginPage from "../pages/LoginPage/LoginPage"
+import TripDetailsPage from "../pages/TripDetailsPage/TripDetailsPage"
 
-export const Router = () => {
+function Router() {
     return (
         <BrowserRouter>
             <Routes>
@@ -21,5 +21,7 @@ export const Router = () => {
                 <Route path="/admin/trips/:id" element={<TripDetailsPage />} />
             </Routes>
         </BrowserRouter>
-    );
-};
+    )
+}
+
+export default Router

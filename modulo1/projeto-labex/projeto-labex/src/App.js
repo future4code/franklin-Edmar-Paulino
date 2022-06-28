@@ -1,12 +1,12 @@
-import './App.css';
-import { Router } from './routes/Router';
+import Router from "./routes/Router"
+import { ScreenContainer } from "./styled"
 
 function App() {
   return (
-    <div className="App">
+    <ScreenContainer>
       <Router />
-    </div>
-  );
+    </ScreenContainer>
+  )
 }
 
-export default App;
+export default App
