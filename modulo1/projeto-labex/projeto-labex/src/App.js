@@ -1,11 +1,10 @@
 import Router from "./routes/Router"
-import { ScreenContainer } from "./styled"
 
 function App() {
   return (
-    <ScreenContainer>
+    <div>
       <Router />
-    </ScreenContainer>
+    </div>
   )
 }
 
