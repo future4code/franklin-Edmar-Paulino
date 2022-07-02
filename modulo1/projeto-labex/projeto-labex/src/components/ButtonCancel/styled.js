@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import { BUTTON, BUTTON_HOVER } from "../../constants/colors"
+import { BUTTON_CANCEL, BUTTON_CANCEL_HOVER } from "../../constants/colors"
 
 export const ButtonContainer = styled.button`
-    background-color: ${BUTTON};
+    background-color: ${BUTTON_CANCEL};
     color: white;
     width: 180px;
     height: 50px;
@@ -16,6 +16,6 @@ export const ButtonContainer = styled.button`
     transition: 500ms;
     &:hover {
         transform: scale(1.2);
-        background-color: ${BUTTON_HOVER};
+        background-color: ${BUTTON_CANCEL_HOVER};
     }
 `

@@ -1,11 +1,11 @@
 import React from "react"
 import { ButtonContainer } from "./styled"
 
-function Button(props) {
+function ButtonCancel(props) {
     const { onClick, textContent } = props
     return (
         <ButtonContainer onClick={onClick}>{textContent}</ButtonContainer>
     )
 }
 
-export default Button
+export default ButtonCancel

@@ -1,12 +1,16 @@
 import React from "react"
+import Button from "../../components/Button/Button"
+import { ButtonContainer, HomeContainer, HomeTitle } from "./styled"
 
 function HomePage() {
     return (
-        <div>
-            <p>Bem vinde à LabeX</p>
-            <button>Área Administrativa</button>
-            <button>Lista de Viagens</button>
-        </div>
+        <HomeContainer>
+            <HomeTitle>Bem vinde à LabeX</HomeTitle>
+            <ButtonContainer>
+                <Button textContent={"Área administrativa"}/>
+                <Button textContent={"Lista de Viagens"}/>
+            </ButtonContainer>
+        </HomeContainer>
     )
 }
 

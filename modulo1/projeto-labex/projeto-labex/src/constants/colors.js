@@ -1,7 +1,7 @@
-// FONT: https://color.adobe.com/pt/search?q=gal%C3%A1xia
-
-export const DARK_BLUE = "#0E316E"
-export const PURPLE = "#6E5FC6"
-export const LIGHT_BLUE = "#35C1F5"
-export const BABY_BLUE = "#A1DFFF"
-export const BABY_PINK = "#DFC1E5"
+export const BUTTON = "#0FC2C0"
+export const BUTTON_HOVER = "#008F8C"
+export const BUTTON_CANCEL = "#F57A82"
+export const BUTTON_CANCEL_HOVER = "#ED5276"
+export const TEXT = "#023535"
+export const TITLE = "#015958"
+export const BACKGROUND = "#D9D9D9"
