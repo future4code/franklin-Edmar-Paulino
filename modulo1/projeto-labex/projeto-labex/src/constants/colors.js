@@ -1,0 +1,7 @@
+export const BUTTON = "#0FC2C0"
+export const BUTTON_HOVER = "#008F8C"
+export const BUTTON_CANCEL = "#F57A82"
+export const BUTTON_CANCEL_HOVER = "#ED5276"
+export const TEXT = "#023535"
+export const TITLE = "#015958"
+export const BACKGROUND = "#D9D9D9"
