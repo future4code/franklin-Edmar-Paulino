@@ -13,9 +13,33 @@ describe("Checa bissexto", () => {
     expect(resultado).toEqual(true);
   });
 
-  test("retorna true pra 1996", () => {});
+  test("retorna true pra 1996", () => {
+    const resultado = checaBissexto(1996);
 
-  test("retorna true pra 2008", () => {});
+    expect(resultado).toEqual(true);
+  });
 
-  test("retorna false pra 2007", () => {});
+  test("retorna true pra 2008", () => {
+    const resultado = checaBissexto(2008);
+
+    expect(resultado).toEqual(true);
+  });
+
+  test("retorna false pra 2007", () => {
+    const resultado = checaBissexto(2007);
+
+    expect(resultado).toEqual(false);
+  });
+
+  test("retorna false pra 2022", () => {
+    const resultado = checaBissexto(2022);
+
+    expect(resultado).toEqual(false);
+  });
+
+  test("retorna true pra 2004", () => {
+    const resultado = checaBissexto(2004);
+
+    expect(resultado).toEqual(true);
+  });
 });

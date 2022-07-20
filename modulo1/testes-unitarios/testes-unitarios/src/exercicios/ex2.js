@@ -1,9 +1,12 @@
+
 export function checaPalindromo(frase) {
-  return (
-    frase ===
-    frase
-      .split("")
-      .reverse()
-      .join("")
-  );
+  const letrasDaFrase = frase
+                          .toLowerCase()
+                          .split("")
+                          .filter((caractere) => caractere >= 'a' && caractere <= 'z');
+
+  const novaFrase = letrasDaFrase.join("");              
+  const fraseReversa = letrasDaFrase.reverse().join("");
+
+  return novaFrase === fraseReversa;
 }
