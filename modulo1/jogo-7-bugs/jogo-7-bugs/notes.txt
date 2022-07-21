@@ -1,0 +1,8 @@
+input valor mínimo - maior ou igual
+input valor máximo - menor ou igual
+input filtro por nome - ascento
+
+valor do primeiro item daquele item
+valor total sendo concatenado
+finalizar comprar com carrinho vazio
+limpar carrinho após compra
