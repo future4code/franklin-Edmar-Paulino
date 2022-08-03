@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 if (process.argv.length !== 3) {
-    console.log(`Esperava 1 parâmetros, mas recebi ${process.argv.length - 2}.`);
+    console.log(`\x1b[31mEsperava 1 parâmetros, mas recebi ${process.argv.length - 2}.\x1b[0m`);
 } else {
     const toDo = process.argv[2];
     fs.open("./toDoDataBase.txt", "a+", (err, fd) => {
