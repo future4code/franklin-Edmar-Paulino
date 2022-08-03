@@ -1,1 +1,1 @@
-console.log("Hello world!");
+console.log("\e[0;31m Hello world\e[m");
