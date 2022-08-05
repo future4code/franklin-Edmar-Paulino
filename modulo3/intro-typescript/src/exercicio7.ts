@@ -18,3 +18,24 @@
 // a) Escreva um programa que converta uma string de DNA em uma string de
 // RNA. Para os exemplos acima, a entrada seria "ATTGCTGCGCATTAACGACGCGTA"
 // e a saída "UAACGACGCGUAAUUGCUGCGCAU"
+
+function dna2rna(dna: string): string {
+    let rna: string = "";
+    for (let i: number = 0; i < dna.length; i++) {
+        switch (dna[i]) {
+            case 'A':
+                rna += 'U';
+                break;
+            case 'T':
+                rna += 'A';
+                break;
+            case 'G':
+                rna += 'C';
+                break;
+            case 'C':
+                rna += 'G';
+                break;
+        }
+    }
+    return rna;
+}
