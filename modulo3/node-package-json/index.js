@@ -1,0 +1,1 @@
+console.log("\x1b[32mHello world\x1b[0m");

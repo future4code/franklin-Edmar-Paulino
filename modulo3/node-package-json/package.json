@@ -1,0 +1,11 @@
+{
+  "name": "node-package-json",
+  "version": "1.0.0",
+  "description": "Exercício da aula de Node e package.json",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "author": "Edmar Paulino",
+  "license": "ISC"
+}
