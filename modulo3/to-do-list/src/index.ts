@@ -43,8 +43,13 @@ async function createTask(title:string, description:string, limitDate:string, cr
         errorStatus = 404;
         throw new Error("Favor informar titulo, descrição, data limite e ID do usuário criador da tarefa")
     }
+    const re:RegExp = RegExp("(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}");
+    if (re.test(limitDate) === false) {
+        errorStatus = 404;
+        throw new Error("Favor informar a data corretamente: dd/mm/aaaa");
+    }
     const [day, month, year] = limitDate.split("/");
-    const date:Date = new Date(Number(year), Number(month), Number(day));
+    const date:Date = new Date(`${year}-${month}-${day}`);
     const id:string = createHash();
     await connection("TodoListTask")
     .insert({ id, title, description, limit_date: date, creator_user_id: creatorUserId})
