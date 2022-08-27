@@ -69,7 +69,7 @@ async function getTaskById(id:string):Promise<any> {
     ])
     .from("TodoListTask")
     .where({ "TodoListTask.id": id })
-    .join("TodoListUser", {"TodoListTask.creator_user_id": "TodoListUser.id"})
+    .join("TodoListUser", {"TodoListTask.creator_user_id": "TodoListUser.id"});
     if (!result) {
         errorStatus = 404;
         throw new Error("Usuário não econtrado.")
@@ -84,9 +84,24 @@ async function getUsers():Promise<any> {
     const result = await connection("TodoListUser")
     .select(["id", "nickname"])
     .from("TodoListUser");
-    if (!result) {
-        throw new Error("Não há usuários cadastrados");
-    }
+    return result;
+}
+
+async function getUserTasks(creatorUserId:any):Promise<any> {
+    const result = connection("TodoListTask")
+    .select([
+        "TodoListTask.id AS taskId",
+        "TodoListTask.title",
+        "TodoListTask.description",
+        "TodoListTask.limit_date AS limitDate",
+        "TodoListTask.status",
+        "TodoListTask.creator_user_id AS creatorUserId",
+        "TodoListUser.nickname AS creatorUserNickname"
+    ])
+    .from("TodoListTask")
+    .where({ "TodoListTask.creator_user_id": creatorUserId })
+    .join("TodoListUser", { "TodoListTask.creator_user_id": "TodoListUser.id" });
+    // concertar formatação da data
     return result;
 }
 
@@ -96,7 +111,7 @@ app.post("/user", async (req:Request, res:Response):Promise<void> => {
         await createUser(name, nickname, email);
         res.status(201).send({ message: "Usuário criado com sucesso" });
     } catch(error:any) {
-        console.log(error);
+        console.error(error);
         res.status(errorStatus).send(error.message);
     }
 });
@@ -106,7 +121,7 @@ app.get("/user/all", async (req:Request, res:Response):Promise<void> => {
         const result:any = await getUsers();
         res.status(200).send({ users: result });
     } catch(error:any) {
-        console.log(error.message);
+        console.error(error.message);
         res.status(errorStatus).send(error.message);
     }
 });
@@ -117,7 +132,7 @@ app.get("/user/:id", async (req:Request, res:Response):Promise<void> => {
         const result:any = await getUserById(id);
         res.status(200).send(result);
     } catch(error:any) {
-        console.log(error);
+        console.error(error);
         res.status(errorStatus).send(error.message);
     }
 });
@@ -129,7 +144,7 @@ app.put("/user/edit/:id", async (req:Request, res:Response):Promise<void> => {
         await editUser(id, name, nickname);
         res.status(201).send({ message: "Alterações salvas com sucesso" });
     } catch(error:any) {
-        console.log(error);
+        console.error(error);
         res.status(errorStatus).send(error.message);
     }
 });
@@ -140,7 +155,7 @@ app.post("/task", async (req:Request, res:Response):Promise<void> => {
         await createTask(title, description, limitDate, creatorUserId);
         res.status(201).send({ message: "Tarefa criada com sucesso" });
     } catch(error:any) {
-        console.log(error.message);
+        console.error(error.message);
         res.status(errorStatus).send(error.message);
     }
 });
@@ -151,8 +166,18 @@ app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
         const result:any = await getTaskById(id);
         res.status(200).send(result);
     } catch(error:any) {
-        console.log(error.message);
+        console.error(error.message);
         res.status(errorStatus).send(error.message);
     }
 });
 
+app.get("/task", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { creatorUserId } = req.query;
+        const result:any = await getUserTasks(creatorUserId);
+        res.status(200).send({ tasks: result });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
