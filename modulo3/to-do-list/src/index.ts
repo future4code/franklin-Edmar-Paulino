@@ -166,6 +166,27 @@ async function getResponsibleUsersOfTask(task_id:string):Promise<any> {
     return result;
 }
 
+async function updateTaskStatus(id:string, newStatus:string):Promise<void> {
+    if (!id) {
+        errorStatus = 400;
+        throw new Error("ID da tarefa não informado");
+    }
+    if (!newStatus) {
+        errorStatus = 400;
+        throw new Error("Favor informar o status da tarefa");
+    }
+    const taskIdExist:any = await connection("TodoListTask")
+    .select([ "id" ])
+    .where({ id });
+    if (taskIdExist.length === 0) {
+        errorStatus = 400;
+        throw new Error("Não existe tarefa com o ID informado");
+    }
+    await connection("TodoListTask")
+    .update({ status: newStatus })
+    .where({ id });
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -266,11 +287,23 @@ app.post("/task/responsible", async (req:Request, res:Response):Promise<void> =>
     }
 });
 
-app.get("/task/:id/responsible", async (req:Request, res:Response) => {
+app.get("/task/:id/responsible", async (req:Request, res:Response):Promise<void> => {
     try {
         const { id } = req.params;
         const result:any = await getResponsibleUsersOfTask(id);
         res.status(200).send({ users: result });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.put("/task/status/:id", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        await updateTaskStatus(id, status);
+        res.status(201).send({ message: "Status atualizado com sucesso" });
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
