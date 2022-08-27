@@ -122,6 +122,16 @@ async function searchUser(query:any):Promise<any> {
     return result;
 }
 
+async function addResponsibleUserToTask(task_id:string, responsible_user_id:string):Promise<void> {
+    if (!task_id || !responsible_user_id) {
+        errorStatus = 400;
+        throw new Error("Favor informar ID da tarefa e ID do usuário responsável por ela");
+    }
+    await connection("TodoListResponsibleUserTaskRelation")
+    .insert({ task_id, responsible_user_id })
+    .into("TodoListResponsibleUserTaskRelation");
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -204,6 +214,17 @@ app.get("/task", async (req:Request, res:Response):Promise<void> => {
         const { creatorUserId } = req.query;
         const result:any = await getUserTasks(creatorUserId);
         res.status(200).send({ tasks: result });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.post("/task/responsible", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { task_id, responsible_user_id } = req.body;
+        await addResponsibleUserToTask(task_id, responsible_user_id);
+        res.status(201).send({ message: "Atribuição de responsabilidade efetuada com sucesso" });
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
