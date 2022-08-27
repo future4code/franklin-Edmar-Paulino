@@ -88,6 +88,10 @@ async function getUsers():Promise<any> {
 }
 
 async function getUserTasks(creatorUserId:any):Promise<any> {
+    if (!creatorUserId) {
+        errorStatus = 400;
+        throw new Error("ID do usuário criador da tarefa não informado");
+    }
     const result = connection("TodoListTask")
     .select([
         "TodoListTask.id AS taskId",
@@ -105,6 +109,19 @@ async function getUserTasks(creatorUserId:any):Promise<any> {
     return result;
 }
 
+async function searchUser(query:any):Promise<any> {
+    if (!query) {
+        errorStatus = 400;
+        throw new Error("Termo de busca não informado");
+    }
+    const result = connection("TodoListUser")
+    .select(["id", "nickname"])
+    .from("TodoListUser")
+    .whereLike("nickname", `%${query}%`)
+    .orWhereLike("email", `%${query}%`);
+    return result;
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -112,6 +129,17 @@ app.post("/user", async (req:Request, res:Response):Promise<void> => {
         res.status(201).send({ message: "Usuário criado com sucesso" });
     } catch(error:any) {
         console.error(error);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.get("/user", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { query } = req.query;
+        const result:any = await searchUser(query);
+        res.status(200).send({ users: result });
+    } catch(error:any) {
+        console.error(error.message);
         res.status(errorStatus).send(error.message);
     }
 });
