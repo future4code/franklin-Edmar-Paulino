@@ -57,6 +57,17 @@ async function createTask(title:string, description:string, limitDate:string, cr
 }
 
 async function getTaskById(id:string):Promise<any> {
+    if (!id) {
+        errorStatus = 400;
+        throw new Error("ID da tarefa não informado");
+    }
+    const taskIdExist:any = await connection("TodoListTask")
+    .select([ "id" ])
+    .where({ id: id });
+    if (taskIdExist.length === 0) {
+        errorStatus = 400;
+        throw new Error("Não existe tarefa com o ID informado");
+    }
     const [result] = await connection("TodoListTask")
     .select([
         "TodoListTask.id AS taskId",
@@ -225,6 +236,7 @@ app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
     try {
         const { id } = req.params;
         const result:any = await getTaskById(id);
+        result.responsibleUsers = await getResponsibleUsersOfTask(id);
         res.status(200).send(result);
     } catch(error:any) {
         console.error(error.message);
