@@ -83,7 +83,7 @@ async function getTaskById(id:string):Promise<any> {
     .join("TodoListUser", {"TodoListTask.creator_user_id": "TodoListUser.id"});
     if (!result) {
         errorStatus = 404;
-        throw new Error("Usuário não econtrado.")
+        throw new Error("Tarefa não encontrado.")
     }
     // Não está funcionando como deveria
     const limitDate:string = `${result.limitDate.getDate()}/${result.limitDate.getMonth()}/${result.limitDate.getFullYear()}`;
@@ -187,6 +187,32 @@ async function updateTaskStatus(id:string, newStatus:string):Promise<void> {
     .where({ id });
 }
 
+async function getTasksByStatus(status:any):Promise<any> {
+    console.log("status here: " + status)
+    if (!status) {
+        errorStatus = 400;
+        throw new Error("Status não informado");
+    }
+    const result = await connection("TodoListTask")
+    .select([
+        "TodoListTask.id AS taskId",
+        "TodoListTask.title",
+        "TodoListTask.description",
+        "TodoListTask.limit_date AS limitDate",
+        "TodoListTask.status",
+        "TodoListTask.creator_user_id AS creatorUserId",
+        "TodoListUser.nickname AS creatorUserNickname"
+    ])
+    .from("TodoListTask")
+    .where({ "TodoListTask.status": `${status}` })
+    .join("TodoListUser", {"TodoListTask.creator_user_id": "TodoListUser.id"});
+    if (!result) {
+        errorStatus = 404;
+        throw new Error("Tarefa não encontrado.")
+    }
+    return result;
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -267,8 +293,13 @@ app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
 
 app.get("/task", async (req:Request, res:Response):Promise<void> => {
     try {
-        const { creatorUserId } = req.query;
-        const result:any = await getUserTasks(creatorUserId);
+        const { creatorUserId, status } = req.query;
+        let result:any = [];
+        if (creatorUserId) {
+            result = await getUserTasks(creatorUserId);
+        } else if (status) {
+            result = await getTasksByStatus(status);
+        }
         res.status(200).send({ tasks: result });
     } catch(error:any) {
         console.error(error.message);
