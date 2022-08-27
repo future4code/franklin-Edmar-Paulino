@@ -80,6 +80,16 @@ async function getTaskById(id:string):Promise<any> {
     return result;
 }
 
+async function getUsers():Promise<any> {
+    const result = await connection("TodoListUser")
+    .select(["id", "nickname"])
+    .from("TodoListUser");
+    if (!result) {
+        throw new Error("Não há usuários cadastrados");
+    }
+    return result;
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -87,6 +97,16 @@ app.post("/user", async (req:Request, res:Response):Promise<void> => {
         res.status(201).send({ message: "Usuário criado com sucesso" });
     } catch(error:any) {
         console.log(error);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.get("/user/all", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const result:any = await getUsers();
+        res.status(200).send({ users: result });
+    } catch(error:any) {
+        console.log(error.message);
         res.status(errorStatus).send(error.message);
     }
 });
@@ -135,3 +155,4 @@ app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
         res.status(errorStatus).send(error.message);
     }
 });
+
