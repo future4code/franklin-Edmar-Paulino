@@ -81,7 +81,7 @@ async function getTaskById(id:string):Promise<any> {
 }
 
 async function getUsers():Promise<any> {
-    const result = await connection("TodoListUser")
+    const result:any = await connection("TodoListUser")
     .select(["id", "nickname"])
     .from("TodoListUser");
     return result;
@@ -92,7 +92,7 @@ async function getUserTasks(creatorUserId:any):Promise<any> {
         errorStatus = 400;
         throw new Error("ID do usuário criador da tarefa não informado");
     }
-    const result = connection("TodoListTask")
+    const result:any = connection("TodoListTask")
     .select([
         "TodoListTask.id AS taskId",
         "TodoListTask.title",
@@ -114,7 +114,7 @@ async function searchUser(query:any):Promise<any> {
         errorStatus = 400;
         throw new Error("Termo de busca não informado");
     }
-    const result = connection("TodoListUser")
+    const result:any = connection("TodoListUser")
     .select(["id", "nickname"])
     .from("TodoListUser")
     .whereLike("nickname", `%${query}%`)
@@ -130,6 +130,29 @@ async function addResponsibleUserToTask(task_id:string, responsible_user_id:stri
     await connection("TodoListResponsibleUserTaskRelation")
     .insert({ task_id, responsible_user_id })
     .into("TodoListResponsibleUserTaskRelation");
+}
+
+async function getResponsibleUsersOfTask(task_id:string):Promise<any> {
+    if (!task_id) {
+        errorStatus = 400;
+        throw new Error("ID da tarefa não informado");
+    }
+    const taskIdExist:any = await connection("TodoListTask")
+    .select([ "id" ])
+    .where({ id: task_id });
+    if (taskIdExist.length === 0) {
+        errorStatus = 400;
+        throw new Error("Não existe tarefa com o ID informado");
+    }
+    const result:any = await connection("TodoListResponsibleUserTaskRelation")
+    .select([
+        "TodoListUser.id AS id",
+        "TodoListUser.nickname AS nickname"
+    ])
+    .from("TodoListResponsibleUserTaskRelation")
+    .where({ task_id })
+    .join("TodoListUser", { "TodoListResponsibleUserTaskRelation.responsible_user_id": "TodoListUser.id" });
+    return result;
 }
 
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
@@ -225,6 +248,17 @@ app.post("/task/responsible", async (req:Request, res:Response):Promise<void> =>
         const { task_id, responsible_user_id } = req.body;
         await addResponsibleUserToTask(task_id, responsible_user_id);
         res.status(201).send({ message: "Atribuição de responsabilidade efetuada com sucesso" });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.get("/task/:id/responsible", async (req:Request, res:Response) => {
+    try {
+        const { id } = req.params;
+        const result:any = await getResponsibleUsersOfTask(id);
+        res.status(200).send({ users: result });
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
