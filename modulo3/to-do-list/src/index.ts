@@ -282,6 +282,28 @@ async function searchTask(query:any):Promise<any> {
     return result;    
 }
 
+async function updateMultipleTaskStatus(task_ids:string[], status:string):Promise<void> {
+    if (!task_ids || task_ids.length === 0 || !status) {
+        errorStatus = 400;
+        throw new Error("ID(s) da(s) tarefa(s) ou status não informado(s)");
+    }
+    task_ids.forEach(async (task_id):Promise<void> => {
+        const taskIdExist:any = await connection("TodoListTask")
+        .select([ "id" ])
+        .where({ id: task_id });
+        console.log(taskIdExist)
+        if (taskIdExist.length === 0) {
+            errorStatus = 400;
+            throw new Error(`Não existe tarefa com o ID informado: ${task_id}`);
+        }
+    })
+    task_ids.forEach(async (task_id):Promise<void> => {
+        await connection("TodoListTask")
+        .update({ status })
+        .where({ id: task_id })
+    })
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -387,6 +409,17 @@ app.get("/task", async (req:Request, res:Response):Promise<void> => {
     }
 });
 
+app.put("/task/status/edit", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { task_ids, status } = req.body;
+        await updateMultipleTaskStatus(task_ids, status);
+        res.status(201).send({ message: "Status das tarefas atualizados com sucesso" });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+})
+
 app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
     try {
         const { id } = req.params;
@@ -432,5 +465,3 @@ app.delete("/task/:taskId/responsible/:responsibleUserId", async (req:Request, r
         res.status(errorStatus).send(error.message);
     }
 });
-
-
