@@ -133,14 +133,16 @@ async function searchUser(query:any):Promise<any> {
     return result;
 }
 
-async function addResponsibleUserToTask(task_id:string, responsible_user_id:string):Promise<void> {
-    if (!task_id || !responsible_user_id) {
+async function addResponsibleUserToTask(task_id:string, responsible_user_ids:string[]):Promise<void> {
+    if (!task_id || !responsible_user_ids || responsible_user_ids.length === 0) {
         errorStatus = 400;
-        throw new Error("Favor informar ID da tarefa e ID do usuário responsável por ela");
+        throw new Error("Favor informar ID da tarefa e ID(s) do(s) usuário(s) responsável(eis) por ela");
     }
-    await connection("TodoListResponsibleUserTaskRelation")
-    .insert({ task_id, responsible_user_id })
-    .into("TodoListResponsibleUserTaskRelation");
+    responsible_user_ids.forEach(async (responsible_user_id):Promise<void> => {
+        await connection("TodoListResponsibleUserTaskRelation")
+        .insert({ task_id, responsible_user_id })
+        .into("TodoListResponsibleUserTaskRelation");
+    });
 }
 
 async function getResponsibleUsersOfTask(task_id:string):Promise<any> {
