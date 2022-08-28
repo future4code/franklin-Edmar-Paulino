@@ -317,6 +317,22 @@ async function deleteTask(id:string):Promise<void> {
     .del();
 }
 
+async function deleteUser(id:string):Promise<void> {
+    if (!id) {
+        errorStatus = 400;
+        throw new Error("ID do usuário não informado!");
+    }
+    await connection("TodoListTask")
+    .where({ creator_user_id: id })
+    .del();
+    await connection("TodoListResponsibleUserTaskRelation")
+    .where({ responsible_user_id: id })
+    .del();
+    await connection("TodoListUser")
+    .where({ id })
+    .del();
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -356,6 +372,17 @@ app.get("/user/:id", async (req:Request, res:Response):Promise<void> => {
         res.status(200).send(result);
     } catch(error:any) {
         console.error(error);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.delete("/user/:id", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { id } = req.params;
+        await deleteUser(id);
+        res.status(201).send({ message: "Usuário deletado com sucesso!" });
+    } catch(error:any) {
+        console.error(error.message);
         res.status(errorStatus).send(error.message);
     }
 });
