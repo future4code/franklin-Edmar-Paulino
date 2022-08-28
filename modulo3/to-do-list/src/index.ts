@@ -5,6 +5,9 @@ import { createHash } from "./functions";
 
 let errorStatus:number = 500;
 
+
+// --- USER QUERIES ---
+
 async function createUser(name:string, nickname:string, email:string):Promise<void> {
     if (!name || !nickname || !email) {
         errorStatus = 400;
@@ -38,6 +41,43 @@ async function editUser(id:string, newName:string, newNickname:string):Promise<v
     .where({ id });
 }
 
+async function getUsers():Promise<any> {
+    const result:any = await connection("TodoListUser")
+    .select(["id", "nickname"])
+    .from("TodoListUser");
+    return result;
+}
+
+async function searchUser(query:any):Promise<any> {
+    if (!query) {
+        errorStatus = 400;
+        throw new Error("Termo de busca não informado");
+    }
+    const result:any = await connection("TodoListUser")
+    .select(["id", "nickname"])
+    .from("TodoListUser")
+    .whereLike("nickname", `%${query}%`)
+    .orWhereLike("email", `%${query}%`);
+    return result;
+}
+
+async function deleteUser(id:string):Promise<void> {
+    if (!id) {
+        errorStatus = 400;
+        throw new Error("ID do usuário não informado!");
+    }
+    await connection("TodoListTask")
+    .where({ creator_user_id: id })
+    .del();
+    await connection("TodoListResponsibleUserTaskRelation")
+    .where({ responsible_user_id: id })
+    .del();
+    await connection("TodoListUser")
+    .where({ id })
+    .del();
+}
+
+// --- TASK QUERIES ---
 async function createTask(title:string, description:string, limitDate:string, creatorUserId:string):Promise<void> {
     if (!title || !description || !limitDate || !creatorUserId) {
         errorStatus = 404;
@@ -91,13 +131,6 @@ async function getTaskById(id:string):Promise<any> {
     return result;
 }
 
-async function getUsers():Promise<any> {
-    const result:any = await connection("TodoListUser")
-    .select(["id", "nickname"])
-    .from("TodoListUser");
-    return result;
-}
-
 async function getUserTasks(creatorUserId:any):Promise<any> {
     if (!creatorUserId) {
         errorStatus = 400;
@@ -117,19 +150,6 @@ async function getUserTasks(creatorUserId:any):Promise<any> {
     .where({ "TodoListTask.creator_user_id": creatorUserId })
     .join("TodoListUser", { "TodoListTask.creator_user_id": "TodoListUser.id" });
     // concertar formatação da data
-    return result;
-}
-
-async function searchUser(query:any):Promise<any> {
-    if (!query) {
-        errorStatus = 400;
-        throw new Error("Termo de busca não informado");
-    }
-    const result:any = await connection("TodoListUser")
-    .select(["id", "nickname"])
-    .from("TodoListUser")
-    .whereLike("nickname", `%${query}%`)
-    .orWhereLike("email", `%${query}%`);
     return result;
 }
 
@@ -317,22 +337,8 @@ async function deleteTask(id:string):Promise<void> {
     .del();
 }
 
-async function deleteUser(id:string):Promise<void> {
-    if (!id) {
-        errorStatus = 400;
-        throw new Error("ID do usuário não informado!");
-    }
-    await connection("TodoListTask")
-    .where({ creator_user_id: id })
-    .del();
-    await connection("TodoListResponsibleUserTaskRelation")
-    .where({ responsible_user_id: id })
-    .del();
-    await connection("TodoListUser")
-    .where({ id })
-    .del();
-}
 
+// --- USER ENDPOINTS ---
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -399,6 +405,8 @@ app.put("/user/edit/:id", async (req:Request, res:Response):Promise<void> => {
     }
 });
 
+
+// --- TASK ENDPOINTS ---
 app.post("/task", async (req:Request, res:Response):Promise<void> => {
     try {
         const { title, description, limitDate, creatorUserId } = req.body;
