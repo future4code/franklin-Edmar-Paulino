@@ -231,6 +231,30 @@ async function getDelayedTasks():Promise<any> {
     return result;
 }
 
+async function removeUserResponsibleFromTask(taskId:string, responsibleUserId:string):Promise<void> {
+    if (!taskId || !responsibleUserId) {
+        errorStatus = 400;
+        throw new Error("Favor informar o ID da tarefa e ID do usuário responsável por ela");
+    }
+    const exist = await connection("TodoListResponsibleUserTaskRelation")
+    .select()
+    .where({
+        "task_id": taskId,
+        "responsible_user_id": responsibleUserId
+    });
+    if (exist.length === 0) {
+        errorStatus = 400;
+        throw new Error("ID da tarefa ou do usuário inválido");
+    }
+    await connection("TodoListResponsibleUserTaskRelation")
+    .where({
+        "task_id": taskId,
+        "responsible_user_id": responsibleUserId
+    })
+    .del()
+
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -363,6 +387,17 @@ app.put("/task/status/:id", async (req:Request, res:Response):Promise<void> => {
         const { status } = req.body;
         await updateTaskStatus(id, status);
         res.status(201).send({ message: "Status atualizado com sucesso" });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.delete("/task/:taskId/responsible/:responsibleUserId", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { taskId, responsibleUserId} = req.params;
+        await removeUserResponsibleFromTask(taskId, responsibleUserId);
+        res.status(201).send({ message: "Responsabilidade removida com sucesso!" });
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
