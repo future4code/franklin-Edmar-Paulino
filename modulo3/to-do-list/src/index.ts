@@ -304,6 +304,19 @@ async function updateMultipleTaskStatus(task_ids:string[], status:string):Promis
     })
 }
 
+async function deleteTask(id:string):Promise<void> {
+    if (!id) {
+        errorStatus = 400;
+        throw new Error("ID não informado!");
+    }
+    await connection("TodoListResponsibleUserTaskRelation")
+    .where({ "TodoListResponsibleUserTaskRelation.task_id": id })
+    .del();
+    await connection("TodoListTask")
+    .where({ id })
+    .del();
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -460,6 +473,17 @@ app.delete("/task/:taskId/responsible/:responsibleUserId", async (req:Request, r
         const { taskId, responsibleUserId} = req.params;
         await removeUserResponsibleFromTask(taskId, responsibleUserId);
         res.status(201).send({ message: "Responsabilidade removida com sucesso!" });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.delete("/task/:id", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { id } = req.params;
+        await deleteTask(id);
+        res.status(201).send({ message: "Tarefa deletada com sucesso" });
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
