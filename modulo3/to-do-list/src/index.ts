@@ -213,6 +213,24 @@ async function getTasksByStatus(status:any):Promise<any> {
     return result;
 }
 
+async function getDelayedTasks():Promise<any> {
+    const result:any = connection("TodoListTask")
+    .select([
+        "TodoListTask.id AS taskId",
+        "TodoListTask.title",
+        "TodoListTask.description",
+        "TodoListTask.limit_date AS limitDate",
+        "TodoListTask.status",
+        "TodoListTask.creator_user_id AS creatorUserId",
+        "TodoListUser.nickname AS creatorUserNickname"
+    ])
+    .from("TodoListTask")
+    .where(connection.raw(`CURDATE() > TodoListTask.limit_date`))
+    .join("TodoListUser", { "TodoListTask.creator_user_id": "TodoListUser.id" });
+    // concertar formatação da data
+    return result;
+}
+
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
     try {
         const { name, nickname, email} = req.body;
@@ -279,12 +297,21 @@ app.post("/task", async (req:Request, res:Response):Promise<void> => {
     }
 });
 
-app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
+app.get("/task/delayed", async (req:Request, res:Response):Promise<void> => {
     try {
-        const { id } = req.params;
-        const result:any = await getTaskById(id);
-        result.responsibleUsers = await getResponsibleUsersOfTask(id);
-        res.status(200).send(result);
+        const result:any = await getDelayedTasks();
+        res.status(200).send({ tasks: result });
+    } catch(error:any) {
+        console.error(error.message);
+        res.status(errorStatus).send(error.message);
+    }
+});
+
+app.post("/task/responsible", async (req:Request, res:Response):Promise<void> => {
+    try {
+        const { task_id, responsible_user_id } = req.body;
+        await addResponsibleUserToTask(task_id, responsible_user_id);
+        res.status(201).send({ message: "Atribuição de responsabilidade efetuada com sucesso" });
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
@@ -307,11 +334,12 @@ app.get("/task", async (req:Request, res:Response):Promise<void> => {
     }
 });
 
-app.post("/task/responsible", async (req:Request, res:Response):Promise<void> => {
+app.get("/task/:id", async (req:Request, res:Response):Promise<void> => {
     try {
-        const { task_id, responsible_user_id } = req.body;
-        await addResponsibleUserToTask(task_id, responsible_user_id);
-        res.status(201).send({ message: "Atribuição de responsabilidade efetuada com sucesso" });
+        const { id } = req.params;
+        const result:any = await getTaskById(id);
+        result.responsibleUsers = await getResponsibleUsersOfTask(id);
+        res.status(200).send(result);
     } catch(error:any) {
         console.error(error.message);
         res.status(errorStatus).send(error.message);
@@ -340,3 +368,5 @@ app.put("/task/status/:id", async (req:Request, res:Response):Promise<void> => {
         res.status(errorStatus).send(error.message);
     }
 });
+
+
