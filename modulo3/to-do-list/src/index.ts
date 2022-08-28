@@ -125,7 +125,7 @@ async function searchUser(query:any):Promise<any> {
         errorStatus = 400;
         throw new Error("Termo de busca não informado");
     }
-    const result:any = connection("TodoListUser")
+    const result:any = await connection("TodoListUser")
     .select(["id", "nickname"])
     .from("TodoListUser")
     .whereLike("nickname", `%${query}%`)
@@ -253,8 +253,33 @@ async function removeUserResponsibleFromTask(taskId:string, responsibleUserId:st
         "task_id": taskId,
         "responsible_user_id": responsibleUserId
     })
-    .del()
+    .del();
+}
 
+async function searchTask(query:any):Promise<any> {
+    if (!query) {
+        errorStatus = 400;
+        throw new Error("Termo de busca não informado");
+    }
+    const result = await connection("TodoListTask")
+    .select([
+        "TodoListTask.id AS taskId",
+        "TodoListTask.title",
+        "TodoListTask.description",
+        "TodoListTask.limit_date AS limitDate",
+        "TodoListTask.status",
+        "TodoListTask.creator_user_id AS creatorUserId",
+        "TodoListUser.nickname AS creatorUserNickname"
+    ])
+    .from("TodoListTask")
+    .whereLike("TodoListTask.title", `%${query}%`)
+    .orWhereLike("TodoListTask.description", `%${query}%`)
+    .join("TodoListUser", {"TodoListTask.creator_user_id": "TodoListUser.id"});
+    if (!result) {
+        errorStatus = 404;
+        throw new Error("Tarefa não encontrado.")
+    }
+    return result;    
 }
 
 app.post("/user", async (req:Request, res:Response):Promise<void> => {
@@ -346,12 +371,14 @@ app.post("/task/responsible", async (req:Request, res:Response):Promise<void> =>
 
 app.get("/task", async (req:Request, res:Response):Promise<void> => {
     try {
-        const { creatorUserId, status } = req.query;
+        const { creatorUserId, status, query } = req.query;
         let result:any = [];
         if (creatorUserId) {
             result = await getUserTasks(creatorUserId);
         } else if (status) {
             result = await getTasksByStatus(status);
+        } else if (query) {
+            result = await searchTask(query);
         }
         res.status(200).send({ tasks: result });
     } catch(error:any) {
