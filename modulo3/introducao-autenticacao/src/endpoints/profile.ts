@@ -17,7 +17,7 @@ async function profile(req: Request, res: Response): Promise<void> {
 
         if (!user) {
             res.statusCode = 422;
-            throw new Error("Invalid tokena");
+            throw new Error("Invalid token");
         }
 
         res.status(200).send({ id: tokenData.id, email: user });
