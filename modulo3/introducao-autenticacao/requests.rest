@@ -1,0 +1,28 @@
+# @name signup
+POST http://localhost:3003/user/signup
+Content-Type: application/json
+
+{
+    "email": "astro@dev.com",
+    "password": "astro1234"
+}
+
+###
+
+# @name login
+POST http://localhost:3003/user/login
+Content-Type: application/json
+
+{
+    "email": "astro@dev.com",
+    "password": "astro1234"
+}
+
+###
+
+# @name profile
+@token = token-here
+
+GET http://localhost:3003/user/profile
+Content-Type: application/json
+Authorization: {{token}}
