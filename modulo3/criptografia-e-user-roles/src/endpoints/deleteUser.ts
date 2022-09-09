@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import UserDatabase from "../data/UserDatabase";
 import Authenticator from "../services/Authenticator";
-import { AuthenticationData } from "../types";
+import { AuthenticationData, UserRole } from "../types";
 
-async function editUser(req: Request, res: Response): Promise<void> {
+async function deleteUser(req: Request, res: Response): Promise<void> {
     try {
-        const { name, nickname } = req.body;
+        const { id } = req.params;
         const token: string = req.headers.authorization as string;
 
-        if (!name && !nickname) {
+        if (!id) {
             res.statusCode = 400;
-            throw new Error("Informe o(s) novo(s) 'name' ou 'nickname'");
+            throw new Error("Id não informado");
         }
 
         if (!token) {
@@ -21,15 +21,20 @@ async function editUser(req: Request, res: Response): Promise<void> {
         const authenticator: Authenticator = new Authenticator();
         const tokenData: AuthenticationData = authenticator.getTokenData(token);
 
+        if (tokenData.role !== UserRole.ADMIN) {
+            res.statusCode = 401;
+            throw new Error("Somente usuários administradores tem acesso a essa funcionalidade");
+        }
+
         const userDB: UserDatabase = new UserDatabase();
-        const affectedRows: number = await userDB.edit(tokenData.id, { name, nickname });
+        const affectedRows: number = await userDB.delete(id);
 
         if (affectedRows === 0) {
             res.statusCode = 404;
-            throw new Error("Usuário não atualizado");
+            throw new Error("Usuário não deletado");
         }
 
-        res.status(201).end();
+        res.status(200).end();
     } catch(error: any) {
         console.error(error.message);
         if (res.statusCode === 200) {
@@ -40,4 +45,4 @@ async function editUser(req: Request, res: Response): Promise<void> {
     }
 }
 
-export default editUser;
+export default deleteUser;

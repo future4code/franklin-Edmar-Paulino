@@ -1,17 +1,11 @@
 import { Request, Response } from "express";
 import UserDatabase from "../data/UserDatabase";
 import Authenticator from "../services/Authenticator";
-import { AuthenticationData } from "../types";
+import { AuthenticationData, user } from "../types";
 
-async function editUser(req: Request, res: Response): Promise<void> {
+async function getUser(req: Request, res: Response): Promise<void> {
     try {
-        const { name, nickname } = req.body;
         const token: string = req.headers.authorization as string;
-
-        if (!name && !nickname) {
-            res.statusCode = 400;
-            throw new Error("Informe o(s) novo(s) 'name' ou 'nickname'");
-        }
 
         if (!token) {
             res.statusCode = 400;
@@ -22,14 +16,9 @@ async function editUser(req: Request, res: Response): Promise<void> {
         const tokenData: AuthenticationData = authenticator.getTokenData(token);
 
         const userDB: UserDatabase = new UserDatabase();
-        const affectedRows: number = await userDB.edit(tokenData.id, { name, nickname });
+        const user: user = await userDB.getById(tokenData.id);
 
-        if (affectedRows === 0) {
-            res.statusCode = 404;
-            throw new Error("Usuário não atualizado");
-        }
-
-        res.status(201).end();
+        res.status(200).send({ user: { id: user.id, email: user.email }});
     } catch(error: any) {
         console.error(error.message);
         if (res.statusCode === 200) {
@@ -40,4 +29,4 @@ async function editUser(req: Request, res: Response): Promise<void> {
     }
 }
 
-export default editUser;
+export default getUser;

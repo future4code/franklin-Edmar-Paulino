@@ -19,15 +19,15 @@ POST http://localhost:3003/user/login
 Content-Type: application/json
 
 {
-    "email": "norman@ozzy.com",
-    "password": "ihatesun"
+    "email": "norman@oscorp.com",
+    "password": "ihatepeter"
 }
 
 ###
 
 # @name edit
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE1ODA3MjRlLTEyZWItNDllYy05MDdiLWVhZmZiM2ViMmZkMCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2Mjc0ODM1OSwiZXhwIjoxNjYyNzQ4OTU5fQ.WBZiamLzyVGl3PAjXXZ9qG9NvkoMrP0vLgKUar65NmQ
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhiZWJiYzlhLWJkZTYtNDM3OS1iOTVkLWJjZDE2MGMzYmQ2MyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE2NjI3NTMyNTgsImV4cCI6MTY2Mjc1Mzg1OH0.Jp0QNwGAObIibAKPi59e_a2WD5L7kuIpdhms0b9MBsM
 
 PUT http://localhost:3003/user/edit
 Content-Type: application/json
@@ -43,4 +43,17 @@ Authorization: {{token}}
 
 GET http://localhost:3003/user/profile
 Content-Type: application/json
+Authorization: {{token}}
+
+###
+
+# @name delete
+
+DELETE http://localhost:3003/user/98b656d5-c089-4b53-90b9-f5b88e1bab55
+Authorization: {{token}}
+
+###
+
+# @name user
+GET http://localhost:3003/user
 Authorization: {{token}}

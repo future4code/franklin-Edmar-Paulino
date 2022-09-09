@@ -26,7 +26,6 @@ async function login(req: Request, res: Response): Promise<void> {
         const token: string = authenticator.generateToken({ id: user.id, role: user.role });
 
         res.status(200).send({ token });
-        console.log(user);
     } catch(error: any) {
         console.error(error.message);
         if (res.statusCode === 200) {

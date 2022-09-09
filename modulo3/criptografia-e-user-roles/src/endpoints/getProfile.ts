@@ -23,7 +23,6 @@ async function getProfile(req: Request, res: Response): Promise<void> {
         const userDB: UserDatabase = new UserDatabase();
         const user: user = await userDB.getById(tokenData.id);
 
-        console.log(tokenData);
         res.status(200).send({ user: { email: user.email, id: user.id }});
     } catch(error: any) {
         console.error(error.message);
