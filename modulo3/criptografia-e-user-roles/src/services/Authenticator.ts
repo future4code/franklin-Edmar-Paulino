@@ -1,10 +1,10 @@
 import * as jwt from "jsonwebtoken";
-import { AuthenticatorData } from "../types";
+import { AuthenticationData } from "../types";
 
 class Authenticator {
     private static EXPIRES_IN = "10m";
 
-    public generateToken = (payload: AuthenticatorData): string => {
+    public generateToken = (payload: AuthenticationData): string => {
         const token: string = jwt.sign(
             payload,
             process.env.JWT_KEY as string,
@@ -16,8 +16,8 @@ class Authenticator {
         return token;
     };
 
-    public getTokenData = (token: string): AuthenticatorData => {
-        const tokenData: AuthenticatorData = jwt.verify(token, process.env.JWT_KEY as string) as AuthenticatorData;
+    public getTokenData = (token: string): AuthenticationData => {
+        const tokenData: AuthenticationData = jwt.verify(token, process.env.JWT_KEY as string) as AuthenticationData;
 
         return tokenData;
     }

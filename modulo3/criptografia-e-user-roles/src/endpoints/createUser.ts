@@ -7,11 +7,11 @@ import { user } from "../types";
 
 async function createUser(req: Request, res: Response): Promise<void> {
     try {
-        const { name, nickname, email, password } = req.body;
+        const { name, nickname, email, password, role } = req.body;
     
-        if (!name || !nickname || !email || !password) {
+        if (!name || !nickname || !email || !password || !role) {
             res.statusCode = 422;
-            throw new Error("Preencha os campos 'name', 'nickname', 'password' e 'email'");
+            throw new Error("Preencha os campos 'name', 'nickname', 'role', 'password' e 'email'");
         }
     
         const userDB: UserDatabase = new UserDatabase();
@@ -26,12 +26,12 @@ async function createUser(req: Request, res: Response): Promise<void> {
         const id: string = idGenerator.generateId();
         const hashManager: HashManager = new HashManager();
         const hash: string = await hashManager.generateHash(password);
-        const newUser: user = { id, name, nickname, email, password: hash };
+        const newUser: user = { id, name, nickname, email, password: hash, role };
     
         await userDB.create(newUser);
     
         const authenticator: Authenticator = new Authenticator();
-        const token: string = authenticator.generateToken({ id });
+        const token: string = authenticator.generateToken({ id, role });
     
         res.status(201).send({ newUser: { id, name, nickname, email }, token });
     } catch(error: any) {

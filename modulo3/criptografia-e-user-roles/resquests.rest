@@ -4,10 +4,11 @@ POST http://localhost:3003/user/signup
 Content-Type: application/json
 
 {
-    "name": "Norman Osbourne",
-    "nickname": "Green Goblin",
-    "email": "norman@oscorp.com",
-    "password": "ihatepeter"
+    "name": "Norman Ozzy",
+    "nickname": "Green bat",
+    "email": "norman@ozzy.com",
+    "password": "ihatesun",
+    "role": "admin"
 }
 
 ###
@@ -18,15 +19,15 @@ POST http://localhost:3003/user/login
 Content-Type: application/json
 
 {
-    "email": "norman@oscorp.com",
-    "password": "ihatepeter"
+    "email": "norman@ozzy.com",
+    "password": "ihatesun"
 }
 
 ###
 
 # @name edit
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhiZWJiYzlhLWJkZTYtNDM3OS1iOTVkLWJjZDE2MGMzYmQ2MyIsImlhdCI6MTY2MjczNzg2MSwiZXhwIjoxNjYyNzM4NDYxfQ.RI1KGVzcPmk6upI78LH3jx7Qm8ouKhJWPj5JJVzkHu0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE1ODA3MjRlLTEyZWItNDllYy05MDdiLWVhZmZiM2ViMmZkMCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2Mjc0ODM1OSwiZXhwIjoxNjYyNzQ4OTU5fQ.WBZiamLzyVGl3PAjXXZ9qG9NvkoMrP0vLgKUar65NmQ
 
 PUT http://localhost:3003/user/edit
 Content-Type: application/json

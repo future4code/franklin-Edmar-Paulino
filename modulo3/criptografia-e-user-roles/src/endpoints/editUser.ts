@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import UserDatabase from "../data/UserDatabase";
 import Authenticator from "../services/Authenticator";
-import { AuthenticatorData } from "../types";
+import { AuthenticationData } from "../types";
 
 async function editUser(req: Request, res: Response): Promise<void> {
     try {
@@ -19,7 +19,7 @@ async function editUser(req: Request, res: Response): Promise<void> {
         }
 
         const authenticator: Authenticator = new Authenticator();
-        const tokenData: AuthenticatorData = authenticator.getTokenData(token);
+        const tokenData: AuthenticationData = authenticator.getTokenData(token);
 
         const userDB: UserDatabase = new UserDatabase();
         const affectRows: number = await userDB.edit(tokenData.id, { name, nickname });
