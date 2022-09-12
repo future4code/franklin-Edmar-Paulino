@@ -1,0 +1,59 @@
+# @name signup
+
+POST http://localhost:3003/user/signup
+Content-Type: application/json
+
+{
+    "name": "Norman Ozzy",
+    "nickname": "Green bat",
+    "email": "norman@ozzy.com",
+    "password": "ihatesun",
+    "role": "admin"
+}
+
+###
+
+# @name login
+
+POST http://localhost:3003/user/login
+Content-Type: application/json
+
+{
+    "email": "norman@oscorp.com",
+    "password": "ihatepeter"
+}
+
+###
+
+# @name edit
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhiZWJiYzlhLWJkZTYtNDM3OS1iOTVkLWJjZDE2MGMzYmQ2MyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE2NjI3NTMyNTgsImV4cCI6MTY2Mjc1Mzg1OH0.Jp0QNwGAObIibAKPi59e_a2WD5L7kuIpdhms0b9MBsM
+
+PUT http://localhost:3003/user/edit
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+    "name": "Norman"
+}
+
+###
+
+# @name profile
+
+GET http://localhost:3003/user/profile
+Content-Type: application/json
+Authorization: {{token}}
+
+###
+
+# @name delete
+
+DELETE http://localhost:3003/user/98b656d5-c089-4b53-90b9-f5b88e1bab55
+Authorization: {{token}}
+
+###
+
+# @name user
+GET http://localhost:3003/user
+Authorization: {{token}}
