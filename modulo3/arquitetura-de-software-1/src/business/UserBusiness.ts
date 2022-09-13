@@ -1,6 +1,5 @@
-import { response } from "express";
 import UserDatabase from "../database/UserDatabase";
-import { IUserDB, User, USER_ROLES } from "../model/User";
+import { User, USER_ROLES } from "../model/User";
 import Authenticator, { ITokenPayload } from "../services/Authenticator";
 import HashManager from "../services/HashManager";
 import IdGenerator from "../services/IdGenerator";
