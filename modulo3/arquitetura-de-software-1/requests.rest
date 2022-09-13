@@ -1,0 +1,41 @@
+# @name signup
+
+POST http://localhost:3003/users/signup
+Content-Type: application/json
+
+{
+	"name": "Michael Scott",
+	"email": "michael@dundermifflin.com",
+	"password": "theboss"
+}
+
+###
+
+# @name login
+
+POST http://localhost:3003/users/login
+Content-Type: application/json
+
+{
+    "email": "astrodev@gmail.com",
+    "password": "bananinha"
+}
+
+###
+
+# @name getUsers
+
+@token = insira-seu-token-aqui
+GET http://localhost:3003/users/all
+Content-Type: application/json
+Authorization: {{token}}
+
+
+###
+
+# @name deleteUser
+
+@token = insira-seu-token-aqui
+DELETE http://localhost:3003/users/:id
+Content-Type: application/json
+Authorization: {{token}}
