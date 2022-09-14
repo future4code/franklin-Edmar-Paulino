@@ -27,6 +27,13 @@ class UserBusiness extends BaseBusiness {
             throw new Error("Senha inválida");
         }
 
+        const userDatabase: UserDatabase = new UserDatabase();
+        const userDB: any = await userDatabase.getUserByEmail(email);
+
+        if (userDB) {
+            throw new Error("Email já cadastrado!");
+        }
+
         const idGenerator: IdGenerator = new IdGenerator();
         const id: string = idGenerator.generate();
 
@@ -35,7 +42,6 @@ class UserBusiness extends BaseBusiness {
 
         const user: User = new User(id, name, email, hashPassword);
 
-        const userDatabase: UserDatabase = new UserDatabase();
         await userDatabase.createUser(user);
 
         const payload: ITokenPayload = {
