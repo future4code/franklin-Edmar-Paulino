@@ -1,4 +1,4 @@
-import { IUserDB } from "../../model/User";
+import { IUserDB, IUserFollowDB } from "../../model/User";
 import { IRecipeDB } from "../../model/Recipe";
 
 export const users: IUserDB[] = [
@@ -20,6 +20,21 @@ export const users: IUserDB[] = [
         email: "ciclana@gmail.com",
         password: "$2a$12$LkWMqS3oPhP2iVMcZOVvWer9ahUPulxjB0EA4TWPxWaRuEEfYGu/i" // asdfg123
     }
+];
+
+export const followers: IUserFollowDB[] = [
+    {
+        id: "bb9b7ee8-ae4b-4bd1-9bd6-e7e21594399b",
+        user_to_follow_id: "7079b8e4-95cd-48aa-82a9-77454e94b789"
+    },
+    {
+        id: "f03017bb-2c08-4cdc-bb63-7fbd7cebe01f",
+        user_to_follow_id: "bb9b7ee8-ae4b-4bd1-9bd6-e7e21594399b"
+    },
+    {
+        id: "7079b8e4-95cd-48aa-82a9-77454e94b789",
+        user_to_follow_id: "f03017bb-2c08-4cdc-bb63-7fbd7cebe01f"
+    },
 ];
 
 export const recipes: IRecipeDB[] = [

@@ -14,5 +14,7 @@ const userController: UserController = new UserController(
 
 userRouter.get("/profile", userController.getProfile);
 userRouter.get("/:id", userController.getUserProfile);
+userRouter.post("/follow", userController.followUser);
+userRouter.post("/unfollow", userController.unfollowUser);
 
 export default userRouter;

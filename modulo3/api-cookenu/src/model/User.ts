@@ -13,11 +13,30 @@ export interface IGetProfileOutputDTO {
     email: string
 }
 
+export interface IFollowUserInputDTO {
+    token: string | undefined,
+    userToFollowId: string
+}
+
+export interface IUnfollowUserInputDTO {
+    token: string | undefined,
+    userToUnfollowId: string
+}
+
+export interface IMessageOutputDTO {
+    message: string
+}
+
 export interface IUserDB {
     id: string,
     name: string,
     email: string,
     password: string
+}
+
+export interface IUserFollowDB {
+    id: string,
+    user_to_follow_id: string
 }
 
 export class User {
@@ -35,4 +54,15 @@ export class User {
     public getEmail = (): string => this.email;
     
     public getPassword = (): string => this.password;
+}
+
+export class UserFollow {
+    constructor(
+        private id: string,
+        private userToFollowId: string
+    ) {}
+
+    public getId = (): string => this.id;
+
+    public getUserToFollowId = (): string => this.userToFollowId;
 }

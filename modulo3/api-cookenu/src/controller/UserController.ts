@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import UserBusiness from "../business/UserBusiness";
-import { IGetProfileInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO } from "../model/User";
+import { IFollowUserInputDTO, IGetProfileInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO } from "../model/User";
 
 class UserController {
     constructor(
@@ -33,6 +33,46 @@ class UserController {
                 token: req.headers.authorization
             };
             const response: IGetProfileOutputDTO = await this.userBusiness.getUserProfile(input);
+
+            res.status(200).send(response);
+        } catch(error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                res.status(400).send({ message: error.message });
+            } else {
+                console.error(error);
+                res.status(500).send({ message: "Unexpected server error" });
+            }
+        }
+    };
+
+    public followUser = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input: IFollowUserInputDTO = {
+                token: req.headers.authorization,
+                userToFollowId: req.body.userToFollowId
+            };
+            const response: IMessageOutputDTO = await this.userBusiness.followUser(input);
+
+            res.status(200).send(response);
+        } catch(error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                res.status(400).send({ message: error.message });
+            } else {
+                console.error(error);
+                res.status(500).send({ message: "Unexpected server error" });
+            }
+        }
+    };
+
+    public unfollowUser = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input: IUnfollowUserInputDTO = {
+                token: req.headers.authorization,
+                userToUnfollowId: req.body.userToUnfollowId
+            };
+            const response: IMessageOutputDTO = await this.userBusiness.unfollowUser(input);
 
             res.status(200).send(response);
         } catch(error: unknown) {

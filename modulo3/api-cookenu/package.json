@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
-    "migrations": "node ./build/database/migrations/Migrations.js"
+    "migrations": "tsc && node ./build/database/migrations/Migrations.js"
   },
   "keywords": [],
   "author": "",
