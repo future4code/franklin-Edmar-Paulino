@@ -35,8 +35,7 @@ class Migrations extends BaseDatabase {
                 name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL
-            );
-                
+            );                
 
             CREATE TABLE IF NOT EXISTS ${RecipeDatabase.TABLE_RECIPES}(
                 id VARCHAR(255) PRIMARY KEY,
@@ -57,4 +56,3 @@ class Migrations extends BaseDatabase {
 
 const migrations: Migrations = new Migrations();
 migrations.execute();
-console.log("Done");

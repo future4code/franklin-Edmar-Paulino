@@ -24,19 +24,30 @@ Content-Type: application/json
 # @name pegarProprioPerfil
 GET http://localhost:3003/user/profile
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNGU2OGNiLTM1ODYtNDZlMy1hM2JiLTcwZjY4ZDU1NWU2YyIsImlhdCI6MTY2MzM0MDA1NiwiZXhwIjoxNjYzNDI2NDU2fQ.oEHCynk7gKWJkT_MC-G_w0fpuJTyf3bR2NriUXZcG1w
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
 
 ###
 
 # @name pegarPerfilDeOutroUsuario
 GET http://localhost:3003/user/7079b8e4-95cd-48aa-82a9-77454e94b789
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNGU2OGNiLTM1ODYtNDZlMy1hM2JiLTcwZjY4ZDU1NWU2YyIsImlhdCI6MTY2MzM0MDA1NiwiZXhwIjoxNjYzNDI2NDU2fQ.oEHCynk7gKWJkT_MC-G_w0fpuJTyf3bR2NriUXZcG1w
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
 
 ###
 
 # @name criarReceita
+POST http://localhost:3003/recipe
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
+
+{
+    "title": "Beijinho",
+    "description": "Numa panela, misture o leite condensado, a manteiga e o coco ralado. Leve ao fogo e misture por aproximadamente 15 minutos. Retire a mistura do fogo e deixe amornar. Modele a massa em formato de bolinhas, passe pelo açúcar cristal ou coco ralado e finalize com cravos-da-índia."
+}
 
 ###
 
 # @name pegarReceita
+GET http://localhost:3003/recipe/c48a216a-eda6-401a-afc3-f636d6822808
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM

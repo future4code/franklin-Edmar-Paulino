@@ -19,7 +19,7 @@ class UserBusiness {
         const user: any = await this.userDatabase.getUserById(tokenData.id);
 
         if (!user) {
-            throw new Error("Token inválido");
+            throw new Error("Token de acesso inválido");
         }
 
         const response: IGetProfileOutputDTO = {
@@ -43,10 +43,10 @@ class UserBusiness {
         }
 
         const tokenData: ITokenPayload = this.authenticator.getTokenData(token);
-        const userExists: any = await this.userDatabase.getUserById(tokenData.id);
+        const tokenIdExists: any = await this.userDatabase.getUserById(tokenData.id);
 
-        if (!userExists) {
-            throw new Error("Token inválido!");
+        if (!tokenIdExists) {
+            throw new Error("Token de acesso inválido!");
         }
 
         const user: any = await this.userDatabase.getUserById(id);
