@@ -1,0 +1,42 @@
+# @name signup
+POST http://localhost:3003/signup
+Content-Type: application/json
+
+{
+    "name": "Cosmodev",
+    "email": "cosmo@dev.com",
+    "password": "123456"
+}
+
+###
+
+# @name login
+POST http://localhost:3003/login
+Content-Type: application/json
+
+{
+    "email": "cosmo@dev.com",
+    "password": "123456"
+}
+
+###
+
+# @name pegarProprioPerfil
+GET http://localhost:3003/user/profile
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNGU2OGNiLTM1ODYtNDZlMy1hM2JiLTcwZjY4ZDU1NWU2YyIsImlhdCI6MTY2MzM0MDA1NiwiZXhwIjoxNjYzNDI2NDU2fQ.oEHCynk7gKWJkT_MC-G_w0fpuJTyf3bR2NriUXZcG1w
+
+###
+
+# @name pegarPerfilDeOutroUsuario
+GET http://localhost:3003/user/7079b8e4-95cd-48aa-82a9-77454e94b789
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNGU2OGNiLTM1ODYtNDZlMy1hM2JiLTcwZjY4ZDU1NWU2YyIsImlhdCI6MTY2MzM0MDA1NiwiZXhwIjoxNjYzNDI2NDU2fQ.oEHCynk7gKWJkT_MC-G_w0fpuJTyf3bR2NriUXZcG1w
+
+###
+
+# @name criarReceita
+
+###
+
+# @name pegarReceita
