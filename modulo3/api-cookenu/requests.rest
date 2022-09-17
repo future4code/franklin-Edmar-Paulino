@@ -48,9 +48,9 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYt
 ###
 
 # @name pegarReceita
-GET http://localhost:3003/recipe/c48a216a-eda6-401a-afc3-f636d6822808
+GET http://localhost:3003/recipe/e503543c-d121-4ed8-9fa6-3e85587e740d
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUtNGI2ZC1hMmYwLTllNjM1ODU5Mzc2YiIsImlhdCI6MTY2MzM2NTEzNywiZXhwIjoxNjYzNDUxNTM3fQ.SgSsKthPwpkKTFtj6qBBYy6TEvTBHuAny8hIJhrrA-0
 
 ###
 
@@ -73,3 +73,11 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUt
 {
     "userToUnfollowId": "7079b8e4-95cd-48aa-82a9-77454e94b789"
 }
+
+###
+
+# @name feed
+GET http://localhost:3003/user/feed
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUtNGI2ZC1hMmYwLTllNjM1ODU5Mzc2YiIsImlhdCI6MTY2MzM1NDU0NywiZXhwIjoxNjYzNDQwOTQ3fQ.IpBY9AudGnY7iJyaEqcLO95bcIIUGYXtuWhLYaBS-TE
+

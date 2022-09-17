@@ -1,10 +1,12 @@
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { USER_ROLES } from "../model/User";
 
 dotenv.config();
 
 export interface ITokenPayload {
-    id: string
+    id: string,
+    role: USER_ROLES
 }
 
 class Authenticator {

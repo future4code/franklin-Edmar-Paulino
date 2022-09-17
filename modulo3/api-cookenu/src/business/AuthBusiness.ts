@@ -1,6 +1,6 @@
 import UserDatabase from "../database/UserDatabase";
 import { IAuthOutputDTO, ILoginAuthInputDTO, ISignupAuthInputDTO } from "../model/Auth";
-import { User } from "../model/User";
+import { User, USER_ROLES } from "../model/User";
 import Authenticator, { ITokenPayload } from "../services/Authenticator";
 import HashManager from "../services/HashManager";
 import IdGenerator from "../services/IdGenerator";
@@ -56,11 +56,14 @@ class AuthBusiness {
 
         const id: string = this.idGenerator.generate();
         const hashPassword: string = await this.hashManager.hash(password);
-        const user: User = new User(id, name, email, hashPassword);
+        const user: User = new User(id, name, email, hashPassword, USER_ROLES.NORMAL);
 
         await this.userDatabase.createUser(user);
 
-        const payload: ITokenPayload = { id };
+        const payload: ITokenPayload = {
+            id: user.getId(),
+            role: user.getRole()
+        };
         const token: string = this.authenticator.generateToken(payload);
         const response: IAuthOutputDTO = { access_token: token };
 
@@ -94,7 +97,7 @@ class AuthBusiness {
             throw new Error("Senha inválida");
         }
 
-        const payload: ITokenPayload = { id: user.id };
+        const payload: ITokenPayload = { id: user.id, role: user.role };
         const token: string = this.authenticator.generateToken(payload);
         const response: IAuthOutputDTO = { access_token: token };
 

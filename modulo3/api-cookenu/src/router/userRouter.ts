@@ -13,6 +13,7 @@ const userController: UserController = new UserController(
 );
 
 userRouter.get("/profile", userController.getProfile);
+userRouter.get("/feed", userController.getUserFeed);
 userRouter.get("/:id", userController.getUserProfile);
 userRouter.post("/follow", userController.followUser);
 userRouter.post("/unfollow", userController.unfollowUser);

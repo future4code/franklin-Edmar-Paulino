@@ -1,5 +1,6 @@
-import { IUserDB, IUserFollowDB, User, UserFollow } from "../model/User";
+import { IUserDB, IUserFollowDB, User, UserFollow, USER_ROLES } from "../model/User";
 import BaseDatabase from "./BaseDatabase";
+import RecipeDatabase from "./RecipeDatabase";
 
 class UserDatabase extends BaseDatabase {
     public static TABLE_USERS = "Cookenu_Users";
@@ -10,7 +11,8 @@ class UserDatabase extends BaseDatabase {
             id: user.getId(),
             name: user.getName(),
             email: user.getEmail(),
-            password: user.getPassword()
+            password: user.getPassword(),
+            role: user.getRole()
         }
 
         return userDB;
@@ -73,6 +75,24 @@ class UserDatabase extends BaseDatabase {
             .where(userFollowDB);
         
         return Number(affectedRows);
+    };
+
+    public getFeed = async (id: string): Promise<any> => {
+        const result = await BaseDatabase.connection(UserDatabase.TABLE_FOLLOWERS)
+            .select([
+                `${RecipeDatabase.TABLE_RECIPES}.id AS id`,
+                `${RecipeDatabase.TABLE_RECIPES}.title AS title`,
+                `${RecipeDatabase.TABLE_RECIPES}.description AS description`,
+                `${RecipeDatabase.TABLE_RECIPES}.created_at AS createdAt`,
+                `${UserDatabase.TABLE_USERS}.id AS userId`,
+                `${UserDatabase.TABLE_USERS}.name AS userName`
+            ])
+            .from(UserDatabase.TABLE_FOLLOWERS)
+            .join(RecipeDatabase.TABLE_RECIPES,`${RecipeDatabase.TABLE_RECIPES}.creator_user_id`, `${UserDatabase.TABLE_FOLLOWERS}.user_to_follow_id`)
+            .join(UserDatabase.TABLE_USERS, `${UserDatabase.TABLE_USERS}.id`, `${UserDatabase.TABLE_FOLLOWERS}.user_to_follow_id`)
+            .whereRaw(`${UserDatabase.TABLE_FOLLOWERS}.id = "${id}"`);
+        
+        return result;
     };
 }
 

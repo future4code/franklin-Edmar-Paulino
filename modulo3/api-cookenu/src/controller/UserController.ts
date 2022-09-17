@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import UserBusiness from "../business/UserBusiness";
-import { IFollowUserInputDTO, IGetProfileInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO } from "../model/User";
+import { IFollowUserInputDTO, ITokenInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO, IGetUserFeedOutputDTO } from "../model/User";
 
 class UserController {
     constructor(
@@ -9,7 +9,7 @@ class UserController {
 
     public getProfile = async (req: Request, res: Response): Promise<void> => {
         try {
-            const input: IGetProfileInputDTO = {
+            const input: ITokenInputDTO = {
                 token: req.headers.authorization
             };
             const response: IGetProfileOutputDTO = await this.userBusiness.getProfile(input);
@@ -73,6 +73,25 @@ class UserController {
                 userToUnfollowId: req.body.userToUnfollowId
             };
             const response: IMessageOutputDTO = await this.userBusiness.unfollowUser(input);
+
+            res.status(200).send(response);
+        } catch(error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                res.status(400).send({ message: error.message });
+            } else {
+                console.error(error);
+                res.status(500).send({ message: "Unexpected server error" });
+            }
+        }
+    };
+
+    public getUserFeed = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input: ITokenInputDTO = {
+                token: req.headers.authorization
+            };
+            const response: IGetUserFeedOutputDTO = await this.userBusiness.getUserFeed(input);
 
             res.status(200).send(response);
         } catch(error: unknown) {

@@ -1,5 +1,5 @@
 import UserDatabase from "../database/UserDatabase";
-import { IFollowUserInputDTO, IGetProfileInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO, UserFollow } from "../model/User";
+import { IFollowUserInputDTO, ITokenInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO, UserFollow, IGetUserFeedOutputDTO } from "../model/User";
 import Authenticator, { ITokenPayload } from "../services/Authenticator";
 
 class UserBusiness {
@@ -8,7 +8,7 @@ class UserBusiness {
         private authenticator: Authenticator
     ) {}
     
-    public getProfile = async (input: IGetProfileInputDTO): Promise<IGetProfileOutputDTO> => {
+    public getProfile = async (input: ITokenInputDTO): Promise<IGetProfileOutputDTO> => {
         const { token } = input;
 
         if (!token) {
@@ -145,6 +145,34 @@ class UserBusiness {
         }
 
         const response: IMessageOutputDTO = { message: "Unfollowed successfully" };
+
+        return response;
+    };
+
+    public getUserFeed = async (input: ITokenInputDTO): Promise<IGetUserFeedOutputDTO> => {
+        const { token } = input;
+
+        if (!token) {
+            throw new Error("Token de acesso não enviado!");
+        }
+
+        const tokenData: ITokenPayload = await this.authenticator.getTokenData(token);
+        const user: any = await this.userDatabase.getUserById(tokenData.id);
+
+        if (!user) {
+            throw new Error("Token de acesso inválido!");
+        }
+
+        const query: any = await this.userDatabase.getFeed(user.id);
+        const recipes: {}[] = query.map((recipe: { createdAt: Date }): object => {
+            const day: number = recipe.createdAt.getDate();
+            const month: number = recipe.createdAt.getMonth() + 1;
+            const year: number = recipe.createdAt.getFullYear();
+            const createdAt = `${day}/${month < 10 ? "0" + month : month}/${year}`;
+
+            return { ...recipe, createdAt };
+        });
+        const response: IGetUserFeedOutputDTO = { recipes };
 
         return response;
     };

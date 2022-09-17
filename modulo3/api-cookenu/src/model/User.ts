@@ -1,4 +1,9 @@
-export interface IGetProfileInputDTO {
+export enum USER_ROLES {
+    NORMAL = "NORMAL",
+    ADMIN = "ADMIN"
+}
+
+export interface ITokenInputDTO {
     token: string | undefined
 }
 
@@ -27,11 +32,16 @@ export interface IMessageOutputDTO {
     message: string
 }
 
+export interface IGetUserFeedOutputDTO {
+    recipes: {}[] | []
+}
+
 export interface IUserDB {
     id: string,
     name: string,
     email: string,
-    password: string
+    password: string,
+    role: USER_ROLES
 }
 
 export interface IUserFollowDB {
@@ -44,7 +54,8 @@ export class User {
         private id: string,
         private name: string,
         private email: string,
-        private password: string
+        private password: string,
+        private role: USER_ROLES
     ) {}
 
     public getId = (): string => this.id;
@@ -54,6 +65,8 @@ export class User {
     public getEmail = (): string => this.email;
     
     public getPassword = (): string => this.password;
+
+    public getRole = (): USER_ROLES => this.role;
 }
 
 export class UserFollow {
