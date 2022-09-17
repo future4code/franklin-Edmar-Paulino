@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import UserBusiness from "../business/UserBusiness";
-import { IFollowUserInputDTO, ITokenInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO, IGetUserFeedOutputDTO } from "../model/User";
+import { 
+    IFollowUserInputDTO,
+    IGetProfileOutputDTO,
+    IGetUserProfileInputDTO,
+    IMessageOutputDTO,
+    IUnfollowUserInputDTO,
+    IGetUserFeedOutputDTO,
+    ITokenInputDTO
+} from "../model/User";
 
 class UserController {
     constructor(
@@ -92,6 +100,26 @@ class UserController {
                 token: req.headers.authorization
             };
             const response: IGetUserFeedOutputDTO = await this.userBusiness.getUserFeed(input);
+
+            res.status(200).send(response);
+        } catch(error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                res.status(400).send({ message: error.message });
+            } else {
+                console.error(error);
+                res.status(500).send({ message: "Unexpected server error" });
+            }
+        }
+    };
+
+    public deleteUser = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input: IGetUserProfileInputDTO = {
+                id: req.params.id,
+                token: req.headers.authorization
+            };
+            const response: IMessageOutputDTO = await this.userBusiness.deleteUser(input);
 
             res.status(200).send(response);
         } catch(error: unknown) {

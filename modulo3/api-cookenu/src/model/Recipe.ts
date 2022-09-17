@@ -1,3 +1,7 @@
+export interface IMessageOutputDTO {
+    message: string
+}
+
 export interface ICreateRecipeInputDTO {
     token: string | undefined,
     title: string,
@@ -16,6 +20,13 @@ export interface IGetRecipeOutputDTO {
     createdAt: string
 }
 
+export interface IEditRecipeInputDTO {
+    token: string | undefined,
+    id: string,
+    title: string,
+    description: string
+}
+
 export interface IRecipeDB {
     id: string,
     creator_user_id: string,
@@ -25,13 +36,13 @@ export interface IRecipeDB {
 }
 
 export class Recipe {
-    private createdAt: Date = new Date();
-
+    
     constructor(
         private id: string,
         private creatorUserId: string,
         private title: string,
-        private description: string
+        private description: string,
+        private createdAt: Date = new Date()
     ) {}
 
     public getId = (): string => this.id;

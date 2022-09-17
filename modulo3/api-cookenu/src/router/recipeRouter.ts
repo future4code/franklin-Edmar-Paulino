@@ -18,5 +18,7 @@ const recipeController: RecipeController = new RecipeController(
 
 recipeRouter.post("/", recipeController.createRecipe);
 recipeRouter.get("/:id", recipeController.getRecipe);
+recipeRouter.put("/:id", recipeController.editRecipe);
+recipeRouter.delete("/:id", recipeController.deleteRecipe);
 
 export default recipeRouter;

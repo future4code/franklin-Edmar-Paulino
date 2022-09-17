@@ -24,40 +24,40 @@ Content-Type: application/json
 # @name pegarProprioPerfil
 GET http://localhost:3003/user/profile
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
+Authorization: token-de-acesso
 
 ###
 
 # @name pegarPerfilDeOutroUsuario
 GET http://localhost:3003/user/7079b8e4-95cd-48aa-82a9-77454e94b789
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
+Authorization: token-de-acesso
 
 ###
 
 # @name criarReceita
 POST http://localhost:3003/recipe
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmNWFhOTc1LTRiOWYtNDg0My1iNWUzLTM5OTExMTY2ZTNjNyIsImlhdCI6MTY2MzM0OTM0OSwiZXhwIjoxNjYzNDM1NzQ5fQ.s20HTRwsabfcIJQ6sAenu6Yk4NGF2Rz_j-cpDaA0jOM
+Authorization: token-de-acesso
 
 {
-    "title": "Beijinho",
-    "description": "Numa panela, misture o leite condensado, a manteiga e o coco ralado. Leve ao fogo e misture por aproximadamente 15 minutos. Retire a mistura do fogo e deixe amornar. Modele a massa em formato de bolinhas, passe pelo açúcar cristal ou coco ralado e finalize com cravos-da-índia."
+    "title": "Ovo frito",
+    "description": "Unte a frigideira com óleo ou manteiga, coloque o ovo após a frigideira aquecer, reze."
 }
 
 ###
 
 # @name pegarReceita
-GET http://localhost:3003/recipe/e503543c-d121-4ed8-9fa6-3e85587e740d
+GET http://localhost:3003/recipe/4c3b5d9c-cd8d-4f1c-80eb-caeafae08347
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUtNGI2ZC1hMmYwLTllNjM1ODU5Mzc2YiIsImlhdCI6MTY2MzM2NTEzNywiZXhwIjoxNjYzNDUxNTM3fQ.SgSsKthPwpkKTFtj6qBBYy6TEvTBHuAny8hIJhrrA-0
+Authorization: token-de-acesso
 
 ###
 
 # @name follow
 POST http://localhost:3003/user/follow
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUtNGI2ZC1hMmYwLTllNjM1ODU5Mzc2YiIsImlhdCI6MTY2MzM1NDU0NywiZXhwIjoxNjYzNDQwOTQ3fQ.IpBY9AudGnY7iJyaEqcLO95bcIIUGYXtuWhLYaBS-TE
+Authorization: token-de-acesso
 
 {
     "userToFollowId": "7079b8e4-95cd-48aa-82a9-77454e94b789"
@@ -68,7 +68,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUt
 # @name unfollow
 POST http://localhost:3003/user/unfollow
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUtNGI2ZC1hMmYwLTllNjM1ODU5Mzc2YiIsImlhdCI6MTY2MzM1NDU0NywiZXhwIjoxNjYzNDQwOTQ3fQ.IpBY9AudGnY7iJyaEqcLO95bcIIUGYXtuWhLYaBS-TE
+Authorization: token-de-acesso
 
 {
     "userToUnfollowId": "7079b8e4-95cd-48aa-82a9-77454e94b789"
@@ -79,5 +79,31 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUt
 # @name feed
 GET http://localhost:3003/user/feed
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkOGE2MWIzLWVhZjUtNGI2ZC1hMmYwLTllNjM1ODU5Mzc2YiIsImlhdCI6MTY2MzM1NDU0NywiZXhwIjoxNjYzNDQwOTQ3fQ.IpBY9AudGnY7iJyaEqcLO95bcIIUGYXtuWhLYaBS-TE
+Authorization: token-de-acesso
 
+###
+
+# @name editRecipe
+PUT http://localhost:3003/recipe/d4973ba0-b5ee-45c2-ae4e-79c10213f0a4
+Content-Type: application/json
+Authorization: token-de-acesso
+
+{
+    "title": "Ovo frito à moda",
+    "description": "Bote o ovo na frigideira e reze"
+}
+
+###
+
+# @name deleteRecipe
+DELETE http://localhost:3003/recipe/4c3b5d9c-cd8d-4f1c-80eb-caeafae08347
+Content-Type: application/json
+Authorization: token-de-acesso
+
+
+###
+
+# @name deleteUser
+DELETE http://localhost:3003/user/b85d5740-501b-46a9-9d31-8babc9615523
+Content-Type: application/json
+Authorization: token-de-acesso

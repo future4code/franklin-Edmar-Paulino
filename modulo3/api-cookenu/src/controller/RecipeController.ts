@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import RecipeBusiness from "../business/RecipeBusiness";
-import { ICreateRecipeInputDTO, IGetRecipeInputDTO, IGetRecipeOutputDTO } from "../model/Recipe";
+import { ICreateRecipeInputDTO, IEditRecipeInputDTO, IGetRecipeInputDTO, IGetRecipeOutputDTO, IMessageOutputDTO  } from "../model/Recipe";
 
 class RecipeController {
     constructor(
@@ -35,6 +35,48 @@ class RecipeController {
                 token: req.headers.authorization
             };
             const response: IGetRecipeOutputDTO = await this.recipeBusiness.getRecipe(input);
+
+            res.status(200).send(response);
+        } catch(error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                res.status(400).send({ message: error.message });
+            } else {
+                console.error(error);
+                res.status(500).send({ message: "Unexpected server error" });
+            }
+        }
+    };
+
+    public editRecipe = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input: IEditRecipeInputDTO = {
+                token: req.headers.authorization,
+                id: req.params.id,
+                title: req.body.title,
+                description: req.body.description
+            };
+            const response: IMessageOutputDTO = await this.recipeBusiness.editRecipe(input);;
+
+            res.status(200).send(response);
+        } catch(error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                res.status(400).send({ message: error.message });
+            } else {
+                console.error(error);
+                res.status(500).send({ message: "Unexpected server error" });
+            }
+        }
+    };
+
+    public deleteRecipe = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input: IGetRecipeInputDTO = {
+                token: req.headers.authorization,
+                id: req.params.id
+            };
+            const response: IMessageOutputDTO = await this.recipeBusiness.deleteRecipe(input);;
 
             res.status(200).send(response);
         } catch(error: unknown) {

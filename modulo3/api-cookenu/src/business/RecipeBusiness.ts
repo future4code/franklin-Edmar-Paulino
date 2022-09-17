@@ -1,6 +1,7 @@
 import RecipeDatabase from "../database/RecipeDatabase";
 import UserDatabase from "../database/UserDatabase";
-import { ICreateRecipeInputDTO, IGetRecipeInputDTO, IGetRecipeOutputDTO, Recipe } from "../model/Recipe";
+import { ICreateRecipeInputDTO, IEditRecipeInputDTO, IGetRecipeInputDTO, IGetRecipeOutputDTO, Recipe } from "../model/Recipe";
+import { IMessageOutputDTO, USER_ROLES } from "../model/User";
 import Authenticator, { ITokenPayload } from "../services/Authenticator";
 import IdGenerator from "../services/IdGenerator";
 
@@ -76,7 +77,94 @@ class RecipeBusiness {
         };
 
         return response;
-    }
+    };
+
+    public editRecipe = async (input: IEditRecipeInputDTO): Promise<IMessageOutputDTO> => {
+        const { token, id, title, description } = input;
+
+        if (!token) {
+            throw new Error("Token de acesso não enviado!");
+        }
+
+        if (!id) {
+            throw new Error("ID da receita não enviado!")
+        }
+
+        if (!title || typeof title !== "string") {
+            throw new Error("Parâmetro 'title' inválido!");
+        }
+
+        if (!description || typeof description !== "string") {
+            throw new Error("Parâmetro 'description' inválido!");
+        }
+
+        const tokenData: ITokenPayload = await this.authenticator.getTokenData(token);
+        const user: any = await this.userDatabase.getUserById(tokenData.id);
+
+        if (!user || user.role !== tokenData.role) {
+            throw new Error("Token de acesso inválido!");
+        }
+
+        const recipe: any = await this.recipeDatabase.getRecipeById(id);
+
+        if (!recipe) {
+            throw new Error("ID inválido!");
+        }
+
+        if (user.role === USER_ROLES.NORMAL && recipe.creator_user_id !== user.id) {
+            throw new Error("Não foi permitido efetuar esta ação");
+        }
+
+        const updatedRecipe: Recipe = new Recipe(recipe.id, recipe.creator_user_id, title, description, recipe.created_at);
+        const affectedRows: number = await this.recipeDatabase.editRecipe(updatedRecipe);
+
+        if (affectedRows === 0) {
+            throw new Error("Receita não atualizada");
+        }
+
+        const response: IMessageOutputDTO = { message: "Edição realizada com sucesso" };
+
+        return response;
+    };
+
+    public deleteRecipe = async (input: IGetRecipeInputDTO): Promise<IMessageOutputDTO> => {
+        const { token, id } = input;
+
+        if (!token) {
+            throw new Error("Token de acesso não enviado!");
+        }
+
+        if (!id) {
+            throw new Error("ID da receita não enviado!");
+        }
+
+        const tokenData: ITokenPayload = this.authenticator.getTokenData(token);
+        const user: any = await this.userDatabase.getUserById(tokenData.id);
+
+        if (!user || user.role !== tokenData.role) {
+            throw new Error("Token de acesso inválido!");
+        }
+
+        const recipe: any = await this.recipeDatabase.getRecipeById(id);
+
+        if (!recipe) {
+            throw new Error("ID da receita inválido!");
+        }
+
+        if (user.role === USER_ROLES.NORMAL && user.id !== recipe.creator_user_id) {
+            throw new Error("Não foi permitido efetuar esta ação");
+        }
+
+        const affectedRows: number = await this.recipeDatabase.deleteRecipe(recipe.id);
+
+        if (affectedRows === 0) {
+            throw new Error("Não foi possível apagar a receita");
+        }
+
+        const response: IMessageOutputDTO = { message: "Receita apagada com sucesso" };
+
+        return response;
+    };
 }
 
 export default RecipeBusiness;

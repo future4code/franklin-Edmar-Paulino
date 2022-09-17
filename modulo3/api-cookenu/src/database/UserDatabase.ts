@@ -94,6 +94,27 @@ class UserDatabase extends BaseDatabase {
         
         return result;
     };
+
+    private destroyRecipesRelations = async (creator_user_id: string): Promise<void> => {
+        await BaseDatabase.connection(RecipeDatabase.TABLE_RECIPES)
+            .del()
+            .where({ creator_user_id });
+    };
+
+    private destroyFollowersRelations = async (id: string): Promise<void> => {
+        await BaseDatabase.connection(UserDatabase.TABLE_FOLLOWERS)
+        .del()
+        .where({ id })
+        .orWhere({ user_to_follow_id: id });
+    };
+
+    public deleteUser = async (id: string): Promise<void> => {
+        await this.destroyRecipesRelations(id);
+        await this.destroyFollowersRelations(id);
+        await BaseDatabase.connection(UserDatabase.TABLE_USERS)
+            .del()
+            .where({ id });
+    };
 }
 
 export default UserDatabase;

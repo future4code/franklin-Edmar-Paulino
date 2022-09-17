@@ -1,5 +1,5 @@
 import UserDatabase from "../database/UserDatabase";
-import { IFollowUserInputDTO, ITokenInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO, UserFollow, IGetUserFeedOutputDTO } from "../model/User";
+import { IFollowUserInputDTO, ITokenInputDTO, IGetProfileOutputDTO, IGetUserProfileInputDTO, IMessageOutputDTO, IUnfollowUserInputDTO, UserFollow, IGetUserFeedOutputDTO, USER_ROLES } from "../model/User";
 import Authenticator, { ITokenPayload } from "../services/Authenticator";
 
 class UserBusiness {
@@ -173,6 +173,41 @@ class UserBusiness {
             return { ...recipe, createdAt };
         });
         const response: IGetUserFeedOutputDTO = { recipes };
+
+        return response;
+    };
+
+    public deleteUser = async (input: IGetUserProfileInputDTO): Promise<IMessageOutputDTO> => {
+        const { token, id } = input;
+
+        if (!token) {
+            throw new Error("Token de acesso não enviado!");
+        }
+
+        if (!id) {
+            throw new Error("ID do usuário não enviado!");
+        }
+
+        const tokenData: ITokenPayload = this.authenticator.getTokenData(token);
+        const user: any = await  this.userDatabase.getUserById(tokenData.id);
+
+        if (!user || user.role !== tokenData.role) {
+            throw new Error("Token de acesso inválido!");
+        }
+
+        if (user.role !== USER_ROLES.ADMIN) {
+            throw new Error("Esta funcionalidade só é acessível a usuários ADMIN!");
+        }
+
+        const isValidId: any = await this.userDatabase.getUserById(id);
+
+        if (!isValidId) {
+            throw new Error("ID do usuário inválido!");
+        }
+
+        await this.userDatabase.deleteUser(id);
+
+        const response: IMessageOutputDTO = { message: "Usuário apagado com sucesso" };
 
         return response;
     };

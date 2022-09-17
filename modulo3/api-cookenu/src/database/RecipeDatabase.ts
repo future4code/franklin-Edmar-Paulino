@@ -29,6 +29,23 @@ class RecipeDatabase extends BaseDatabase {
 
         await BaseDatabase.connection(RecipeDatabase.TABLE_RECIPES).insert(recipeDB);
     };
+
+    public editRecipe = async (recipe: Recipe): Promise<number> => {
+        const recipeDB: IRecipeDB = this.toRecipeDBModel(recipe);
+        const affectedRows: any = await BaseDatabase.connection(RecipeDatabase.TABLE_RECIPES)
+            .update(recipeDB)
+            .where({ id: recipeDB.id });
+        
+        return Number(affectedRows);
+    };
+
+    public deleteRecipe = async (id: string): Promise<number> => {
+        const affectedRows: any = await BaseDatabase.connection(RecipeDatabase.TABLE_RECIPES)
+            .del()
+            .where({ id });
+        
+        return Number(affectedRows);
+    };
 }
 
 export default RecipeDatabase;
