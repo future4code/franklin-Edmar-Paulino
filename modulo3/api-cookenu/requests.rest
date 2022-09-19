@@ -1,0 +1,109 @@
+# @name signup
+POST http://localhost:3003/signup
+Content-Type: application/json
+
+{
+    "name": "Cosmodev",
+    "email": "cosmo@dev.com",
+    "password": "123456"
+}
+
+###
+
+# @name login
+POST http://localhost:3003/login
+Content-Type: application/json
+
+{
+    "email": "cosmo@dev.com",
+    "password": "123456"
+}
+
+###
+
+# @name pegarProprioPerfil
+GET http://localhost:3003/user/profile
+Content-Type: application/json
+Authorization: token-de-acesso
+
+###
+
+# @name pegarPerfilDeOutroUsuario
+GET http://localhost:3003/user/7079b8e4-95cd-48aa-82a9-77454e94b789
+Content-Type: application/json
+Authorization: token-de-acesso
+
+###
+
+# @name criarReceita
+POST http://localhost:3003/recipe
+Content-Type: application/json
+Authorization: token-de-acesso
+
+{
+    "title": "Ovo frito",
+    "description": "Unte a frigideira com óleo ou manteiga, coloque o ovo após a frigideira aquecer, reze."
+}
+
+###
+
+# @name pegarReceita
+GET http://localhost:3003/recipe/4c3b5d9c-cd8d-4f1c-80eb-caeafae08347
+Content-Type: application/json
+Authorization: token-de-acesso
+
+###
+
+# @name follow
+POST http://localhost:3003/user/follow
+Content-Type: application/json
+Authorization: token-de-acesso
+
+{
+    "userToFollowId": "7079b8e4-95cd-48aa-82a9-77454e94b789"
+}
+
+###
+
+# @name unfollow
+POST http://localhost:3003/user/unfollow
+Content-Type: application/json
+Authorization: token-de-acesso
+
+{
+    "userToUnfollowId": "7079b8e4-95cd-48aa-82a9-77454e94b789"
+}
+
+###
+
+# @name feed
+GET http://localhost:3003/user/feed
+Content-Type: application/json
+Authorization: token-de-acesso
+
+###
+
+# @name editRecipe
+PUT http://localhost:3003/recipe/d4973ba0-b5ee-45c2-ae4e-79c10213f0a4
+Content-Type: application/json
+Authorization: token-de-acesso
+
+{
+    "title": "Ovo frito à moda",
+    "description": "Bote o ovo na frigideira e reze"
+}
+
+###
+
+# @name deleteRecipe
+DELETE http://localhost:3003/recipe/4c3b5d9c-cd8d-4f1c-80eb-caeafae08347
+Content-Type: application/json
+Authorization: token-de-acesso
+
+
+###
+
+# @name deleteUser
+DELETE http://localhost:3003/user/b85d5740-501b-46a9-9d31-8babc9615523
+Content-Type: application/json
+Authorization: token-de-acesso
