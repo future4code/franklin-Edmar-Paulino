@@ -1,5 +1,5 @@
 export function goToMegasena(navigate) {
-    navigate("/megasena");
+    navigate("/mega-sena");
 }
 
 export function goToQuina(navigate) {

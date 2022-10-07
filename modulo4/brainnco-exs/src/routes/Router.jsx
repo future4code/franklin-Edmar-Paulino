@@ -11,7 +11,8 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index path="/megasena" element={<MegasenaPage />} />
+                <Route index element={<MegasenaPage />} />
+                <Route path="/mega-sena" element={<MegasenaPage />} />
                 <Route path="/quina" element={<QuinaPage />} />
                 <Route path="/lotofacil" element={<LotofacilPage />} />
                 <Route path="/lotomania" element={<LotomaniaPage />} />
