@@ -1,23 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DiaDeSortePage from "../pages/DiaDeSortePage/DiaDeSortePage";
-import LotofacilPage from "../pages/LotofacilPage/LotofacilPage";
-import LotomaniaPage from "../pages/LotomaniaPage/LotomaniaPage";
-import MegasenaPage from "../pages/MegasenaPage/MegasenaPage";
-import QuinaPage from "../pages/QuinaPage/QuinaPage";
-import TimemaniaPage from "../pages/TimemaniaPage/TimemaniaPage";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import LotteriesPage from "../pages/LotteriesPage/LotteriesPage";
 
 function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={<MegasenaPage />} />
-                <Route path="/mega-sena" element={<MegasenaPage />} />
-                <Route path="/quina" element={<QuinaPage />} />
-                <Route path="/lotofacil" element={<LotofacilPage />} />
-                <Route path="/lotomania" element={<LotomaniaPage />} />
-                <Route path="/timemania" element={<TimemaniaPage />} />
-                <Route path="/dia-de-sorte" element={<DiaDeSortePage />} />
+                <Route index element={<LotteriesPage />} />
+                <Route path="*" element={<ErrorPage />} />
             </Routes>
         </BrowserRouter>
     );
