@@ -2,16 +2,15 @@ import styled from "styled-components";
 import { BLACK_TEXT_COLOR, ELLIPSE_DRAW_COLOR } from "../../constants/colors";
 
 export const EllipseContainer = styled.div`
-    /* background-color: ${ELLIPSE_DRAW_COLOR}; */
-    background-color: purple;
+    background-color: ${ELLIPSE_DRAW_COLOR};
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 105px;
-    width: 110px;
+    height: 100px;
+    width: 100px;
     border-radius: 50%;
-    margin: 25px;
+    margin: 10px;
 `;
 
 export const EllipseContent = styled.p`

@@ -8,7 +8,7 @@ export const LotteriesContainer = styled.div`
     flex-direction: row;
     width: 100vw;
     height: 100vh;
-    min-width: 100px;
+    min-width: 1000px;
     background-color: ${BACKGROUND_COLOR};
 `;
 
@@ -20,7 +20,7 @@ export const LotteriesInfoContainer = styled.div`
     min-width: 500px;
     max-width: 613px;
     height: 100%;
-    background-color: ${MEGA_SENA_COLOR};
+    background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : MEGA_SENA_COLOR)};    
     padding: 96px;
     box-sizing: border-box;
 `;
@@ -66,20 +66,29 @@ export const LotteryInfoFooter = styled.div`
 `;
 
 export const ContestContainer = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+export const ContestNumbersContainer = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
-    width: 100%;
-    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    height: 70%;
+`;
 
-    .contest-footer-waring {
-        color: ${BLACK_TEXT_COLOR};
-        font-size: 16px;
-        font-weight: 400;
-        position: relative;
-        bottom: 96px;
-        text-align: center;
-    }
+export const ContestFooterContainer = styled.div`
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    color: ${BLACK_TEXT_COLOR};
+    font-size: 16px;
+    font-weight: 400;
+    bottom: 96px;
 `;

@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Ellipse from "../../components/Ellipse/Ellipse";
 import { getContests, getLotteries, getLotteryContests } from "../../services/lotteries";
-import { ContestContainer, LogoImage, LotteriesContainer, LotteriesInfoContainer, LotteryInfoFooter, LotteryTitle, LotteryTitleContainer, SelectLottery } from "./styled";
+import { ContestContainer, ContestFooterContainer, ContestNumbersContainer, LogoImage, LotteriesContainer, LotteriesInfoContainer, LotteryInfoFooter, LotteryTitle, LotteryTitleContainer, SelectLottery } from "./styled";
 import logo from "../../assets/logo.svg";
-import { FOOTER_WARNING } from "../../constants/colors";
+import { DIA_DE_SORTE_COLOR, FOOTER_WARNING, LOTOFACIL_COLOR, LOTOMANIA_COLOR, MEGA_SENA_COLOR, QUINA_COLOR, TIMEMANIA_COLOR } from "../../constants/colors";
 
 function LotteriesPage() {
     const [lotteries, setLotteries] = useState([]);
     const [lotteryContests, setLotteryContests] = useState([]);
     const [contest, setContest] = useState({});
     const [lotteryName, setLotteryName] = useState("");
+    const [lotteryColor, setLotteryColor] = useState(MEGA_SENA_COLOR);
+
+    const lotteryColors = [
+        MEGA_SENA_COLOR,
+        QUINA_COLOR,
+        LOTOFACIL_COLOR,
+        LOTOMANIA_COLOR,
+        TIMEMANIA_COLOR,
+        DIA_DE_SORTE_COLOR
+    ];
 
     useEffect(() => {
         getLotteries(setLotteries);
@@ -32,6 +42,7 @@ function LotteriesPage() {
         setLotteryName(lottery.nome.toUpperCase());
         const contest = lotteryContests.find(lottery => lottery.loteriaId === lotteryId);
         const contestId = contest.concursoId;
+        setLotteryColor(lotteryColors[lotteryId]);
         getContests(contestId, setContest);
     };
 
@@ -46,7 +57,7 @@ function LotteriesPage() {
 
     return (
         <LotteriesContainer>
-            <LotteriesInfoContainer>
+            <LotteriesInfoContainer backgroundColor={lotteryColor}>
                 <SelectLottery onChange={handleSelect}>
                     {
                         lotteries.length > 0 
@@ -69,15 +80,19 @@ function LotteriesPage() {
                 </LotteryInfoFooter>
             </LotteriesInfoContainer>
             <ContestContainer>
-                {
-                    contest.id
-                    && contest.numeros.map((number) => {
-                        return (
-                            <Ellipse key={number} text={number} />
-                        );
-                    })
-                }
-                <p className="contest-footer-waring">{FOOTER_WARNING}</p>
+                <ContestNumbersContainer>
+                    {
+                        contest.id
+                        && contest.numeros.map((number) => {
+                            return (
+                                <Ellipse key={number} text={number} />
+                            );
+                        })
+                    }
+                </ContestNumbersContainer>
+                <ContestFooterContainer>
+                    <p className="contest-footer-waring">{FOOTER_WARNING}</p>
+                </ContestFooterContainer>
             </ContestContainer>
         </LotteriesContainer>
     );
