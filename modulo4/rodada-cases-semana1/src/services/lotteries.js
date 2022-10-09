@@ -1,15 +1,15 @@
 import axios from "axios";
 import { BASE_URL } from "../constants/urls";
 
-export function getLotteries() {
+export function getLotteries(setLotteries) {
     axios.get(`${BASE_URL}/loterias`)
-        .then(response => response.data)
+        .then(response => setLotteries(response.data))
         .catch(error => console.log(error));
 }
 
-export function getLotteryContests() {
+export function getLotteryContests(setLotteryContests) {
     axios.get(`${BASE_URL}/loterias-concursos`)
-        .then(response => response.data)
+        .then(response => setLotteryContests(response.data))
         .catch(error => console.error(error));
 }
 

@@ -1,0 +1,11 @@
+export const MEGA_SENA_COLOR = "#6BEFA3";
+export const QUINA_COLOR = "#8666EF";
+export const LOTOFACIL_COLOR = "#DD7AC6";
+export const LOTOMANIA_COLOR = "#FFAB64";
+export const TIMEMANIA_COLOR = "#5AAD7D";
+export const DIA_DE_SORTE_COLOR = "#BFAF83";
+export const BACKGROUND_COLOR = "#EFEFEF";
+export const BLACK_TEXT_COLOR = "#333333"
+export const WHITE_TEXT_COLOR = "#FFFFFF";
+export const ELLIPSE_DRAW_COLOR = "#FFFFFF";
+export const FOOTER_WARNING = "Este sorteio é meramente ilustrativo e não possui nenhuma ligação com a CAIXA."
