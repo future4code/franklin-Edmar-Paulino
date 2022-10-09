@@ -11,6 +11,11 @@ export const EllipseContainer = styled.div`
     width: 100px;
     border-radius: 50%;
     margin: 10px;
+    
+    @media (max-width: 1024px) {
+        width: 80px;
+        height: 80px;
+    }
 `;
 
 export const EllipseContent = styled.p`

@@ -75,7 +75,8 @@ function LotteriesPage() {
                     <LotteryTitle>{lotteryName}</LotteryTitle>
                 </LotteryTitleContainer>
                 <LotteryInfoFooter>
-                    <p className="contest">Concurso</p>
+                    <p className="contest-desktop">CONCURSO</p>
+                    <p className="contest-mobile">{`CONCURSO Nº ${contest.id }`} </p>
                     <p className="contest-info">{contest.id && `${contest.id} - ${getFormattedDate(contest.data)}`}</p>
                 </LotteryInfoFooter>
             </LotteriesInfoContainer>

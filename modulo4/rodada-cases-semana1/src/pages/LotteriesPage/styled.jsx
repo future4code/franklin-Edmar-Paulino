@@ -8,8 +8,11 @@ export const LotteriesContainer = styled.div`
     flex-direction: row;
     width: 100vw;
     height: 100vh;
-    min-width: 1000px;
-    background-color: ${BACKGROUND_COLOR};
+    
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        max-width: 100vw;
+    }
 `;
 
 export const LotteriesInfoContainer = styled.div`
@@ -17,26 +20,40 @@ export const LotteriesInfoContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     width: 613px;
-    min-width: 500px;
-    max-width: 613px;
     height: 100%;
     background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : MEGA_SENA_COLOR)};    
     padding: 96px;
     box-sizing: border-box;
+
+    @media (max-width: 1024px) {
+        width: 100vw;
+        height: 500px;
+        align-items: center;
+        padding: 50px 0px;
+    }
 `;
 
 export const SelectLottery = styled.select`
     width: 215px;
     height: 45px;
+    min-height: 45px;
     padding-left: 23px;
     border-radius: 5px;
     border: none;
+    font-size: 15px;
+    font-weight: 500;
 `;
 
 export const LotteryTitleContainer = styled.div`
     display: flex;
-    align-items: center;
     flex-direction: row;
+    align-items: center;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        max-width: 100vw;
+        margin: 84px 0px;
+    }
 `;
 
 export const LogoImage = styled.img`
@@ -48,20 +65,40 @@ export const LotteryTitle = styled.h1`
     font-size: 30px;
     margin-left: 20px;
     font-weight: 700;
+
+    @media (max-width: 1024px) {
+        margin: 12px 0px 0px 0px;
+    }
 `;
 
 export const LotteryInfoFooter = styled.div`
     color: ${WHITE_TEXT_COLOR};
 
-    .contest {
+    .contest-desktop {
         font-size: 14px;
         font-weight: 500;
+    }
+
+    .contest-mobile {
+        font-size: 14px;
+        font-weight: 500;
+        display: none;
     }
 
     .contest-info {
         font-size: 20px;
         font-weight: 700;
         margin-top: 14px;
+    }
+
+    @media (max-width: 1024px) {
+        .contest-desktop, .contest-info {
+            display: none;
+        }
+
+        .contest-mobile {
+            display: flex;
+        }
     }
 `;
 
@@ -71,6 +108,7 @@ export const ContestContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: ${BACKGROUND_COLOR};
 `;
 
 export const ContestNumbersContainer = styled.div`
@@ -81,6 +119,12 @@ export const ContestNumbersContainer = styled.div`
     align-items: center;
     margin: auto;
     height: 70%;
+
+    @media (max-width: 1024px) {
+        height: 100%;
+        margin: unset;
+        padding: 10px;
+    }
 `;
 
 export const ContestFooterContainer = styled.div`
@@ -91,4 +135,9 @@ export const ContestFooterContainer = styled.div`
     font-size: 16px;
     font-weight: 400;
     bottom: 96px;
+
+    @media (max-width: 1024px) {
+        padding: 0px 104px 37px;
+        position: unset;
+    }
 `;
