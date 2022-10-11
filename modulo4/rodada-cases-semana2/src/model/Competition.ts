@@ -1,0 +1,4 @@
+export enum COMPETITION_TYPE {
+    HUNDRED_DASH = "HUNDRED_DASH",
+    DART = "DART"
+}

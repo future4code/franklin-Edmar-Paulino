@@ -1,0 +1,21 @@
+# @name Create
+POST http://localhost:3003/competition
+Content-Type: application/json
+
+###
+
+# @name Result
+POST http://localhost:3003/competition/1
+Content-Type: application/json
+
+###
+
+# @name Finish
+POST http://localhost:3003/competition/1/finish
+Content-Type: application/json
+
+###
+
+# @name Ranking
+GET http://localhost:3003/competition/1
+Content-Type: application/json
