@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Server, AddressInfo } from "net";
 import competitionRouter from "./router/competitionRouter";
+import IdGenerator from "./services/IdGenerator";
 
 dotenv.config();
 
