@@ -3,13 +3,13 @@ import { COMPETITION_TYPE, ICompetitionDB, IResultDB } from "../../model/Competi
 export const competitions: ICompetitionDB[] = [
     {
         id: "f77d0fc1-e102-4075-850c-dd0fb5852f98",
-        name: "Super Dart Championship",
+        name: "Fast and Furious Heros",
         type: COMPETITION_TYPE.HUNDRED_DASH,
         finished: false
     },
     {
         id: "6f1977f4-7878-4279-8642-f731d00294fe",
-        name: "Fast and Furious Heros",
+        name: "Super Dart Championship",
         type: COMPETITION_TYPE.DART,
         finished: true
     }

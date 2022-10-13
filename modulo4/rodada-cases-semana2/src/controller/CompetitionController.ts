@@ -18,8 +18,10 @@ class CompetitionController {
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err.message);
+                res.status(400).send({ message: err.message });
             } else {
                 console.error(err);
+                res.status(500).send({ message: "Internal server error" });
             }
         }
     };
