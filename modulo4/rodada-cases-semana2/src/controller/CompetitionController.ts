@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import CompetitionBusiness from "../business/CompetitionBusiness";
-import { ICreateCompetitionInputDTO, IIDOutputDTO } from "../model/Competition";
+import { ICreateCompetitionInputDTO, IIDInputDTO, IRegisterNewTryInputDTO, IIDOutputDTO, IMessageOutputDTO, IRegisterCompetitionResultInputDTO, IStatusCode, IRankingOutputDTO } from "../model/Competition";
+
+export const statusCode: IStatusCode = {
+    code: 200,
+    reset: () => statusCode.code = 200
+};
 
 class CompetitionController {
     constructor(
@@ -17,60 +22,117 @@ class CompetitionController {
             res.status(200).send(result);
         } catch(err: unknown) {
             if (err instanceof Error) {
-                console.error(err.message);
-                res.status(400).send({ message: err.message });
+                console.error(err);
+                if (statusCode.code === 200) {
+                    res.status(500).send({ message: "An unexpected error occurred" });
+                } else {
+                    res.status(statusCode.code).send({ message: err.message });
+                }
             } else {
                 console.error(err);
                 res.status(500).send({ message: "Internal server error" });
             }
+        } finally {
+            statusCode.reset();
         }
     };
 
-    public registerResult = async (req: Request, res: Response): Promise<void> => {
+    public registerCompetitionResult = async (req: Request, res: Response): Promise<void> => {
         try {
-            res.status(200).send({ message: "Results regitered!" });
+            const input: IRegisterCompetitionResultInputDTO = {
+                competitionId: req.params.id,
+                athlete: req.body.athlete,
+                value: req.body.value
+            };
+            const result: IIDOutputDTO = await this.competitionBusiness.registerCompetitionResult(input);
+
+            res.status(200).send(result);
         } catch(err: unknown) {
             if (err instanceof Error) {
-                console.error(err.message);
+                console.error(err);
+                if (statusCode.code === 200) {
+                    res.status(500).send({ message: "An unexpected error occurred" });
+                } else {
+                    res.status(statusCode.code).send({ message: err.message });
+                }
             } else {
                 console.error(err);
+                res.status(500).send({ message: "Internal server error" });
             }
+        } finally {
+            statusCode.reset();
         }
     };
 
-    public newTry = async (req: Request, res: Response): Promise<void> => {
+    public registerNewTry = async (req: Request, res: Response): Promise<void> => {
         try {
-            res.status(200).send({ message: "New try registered!" });
+            const input: IRegisterNewTryInputDTO = {
+                id: req.params.id,
+                newValue: req.body.newValue
+            }
+            const result: IMessageOutputDTO = await this.competitionBusiness.updateNumberOfTries(input);
+
+            res.status(200).send(result);
         } catch(err: unknown) {
             if (err instanceof Error) {
-                console.error(err.message);
+                console.error(err);
+                if (statusCode.code === 200) {
+                    res.status(500).send({ message: "An unexpected error occurred" });
+                } else {
+                    res.status(statusCode.code).send({ message: err.message });
+                }
             } else {
                 console.error(err);
+                res.status(500).send({ message: "Internal server error" });
             }
+        } finally {
+            statusCode.reset();
         }
-    }
+    };
 
     public finishCompetition = async (req: Request, res: Response): Promise<void> => {
         try {
-            res.status(200).send({ message: "Competition finished!" });
+            const input: IIDInputDTO = { id: req.params.id };
+            const result: IMessageOutputDTO = await this.competitionBusiness.finishCompetiton(input);
+
+            res.status(200).send(result);
         } catch(err: unknown) {
             if (err instanceof Error) {
-                console.error(err.message);
+                console.error(err);
+                if (statusCode.code === 200) {
+                    res.status(500).send({ message: "An unexpected error occurred" });
+                } else {
+                    res.status(statusCode.code).send({ message: err.message });
+                }
             } else {
                 console.error(err);
+                res.status(500).send({ message: "Internal server error" });
             }
+        } finally {
+            statusCode.reset();
         }
     };
 
     public getCompetitionRanking = async (req: Request, res: Response): Promise<void> => {
         try {
-            res.status(200).send({ message: "Competition Ranking" });
+            const input: IIDInputDTO = { id: req.params.id };
+            const result: IRankingOutputDTO = await this.competitionBusiness.getCompetitionRanking(input);
+
+            res.status(200).send(result);
         } catch(err: unknown) {
             if (err instanceof Error) {
-                console.error(err.message);
+                console.error(err);
+                if (statusCode.code === 200) {
+                    res.status(500).send({ message: "An unexpected error occurred" });
+                } else {
+                    res.status(statusCode.code).send({ message: err.message });
+                }
             } else {
                 console.error(err);
+                res.status(500).send({ message: "Internal server error" });
             }
+        } finally {
+            statusCode.reset();
         }
     };
 }

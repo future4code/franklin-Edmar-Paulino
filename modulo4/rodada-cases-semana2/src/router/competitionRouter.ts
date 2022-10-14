@@ -14,8 +14,8 @@ const competitionController: CompetitionController = new CompetitionController(
 );
 
 competitionRouter.post("/competition", competitionController.createCompetition);
-competitionRouter.post("/competition/:id", competitionController.registerResult);
-competitionRouter.put("/result/:id", competitionController.newTry);
+competitionRouter.post("/competition/:id", competitionController.registerCompetitionResult);
+competitionRouter.put("/result/:id", competitionController.registerNewTry);
 competitionRouter.put("/competition/:id/finish", competitionController.finishCompetition);
 competitionRouter.get("/competition/:id/ranking", competitionController.getCompetitionRanking);
 

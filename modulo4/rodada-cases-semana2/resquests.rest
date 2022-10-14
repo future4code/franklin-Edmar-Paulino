@@ -3,26 +3,35 @@ POST http://localhost:3003/competition
 Content-Type: application/json
 
 {
-    "name": "Nicole Run World Tour",
+    "name": "Chico Run World Tour",
     "type": "HUNDRED_DASH"
 }
 
 ###
 
 # @name Result
-POST http://localhost:3003/competition/1
+POST http://localhost:3003/competition/4a50c06f-9787-41c4-840f-407bd5b45df6
 Content-Type: application/json
+
+{
+    "athlete": "Chiquinho Feliz",
+    "value": 99
+}
 
 ###
 
-# @name Try
-PUT http://localhost:3003/result/1
+# @name registerNewTry
+PUT http://localhost:3003/result/f6d0bba4-1892-4340-a280-c63cb0245309
 Content-Type: application/json
+
+{
+    "newValue": 97
+}
 
 ###
 
 # @name Finish
-PUT http://localhost:3003/competition/1/finish
+PUT http://localhost:3003/competition/4a50c06f-9787-41c4-840f-407bd5b45df6/finish
 Content-Type: application/json
 
 ###
