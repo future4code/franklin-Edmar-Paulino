@@ -40,7 +40,7 @@ class Migrations extends BaseDatabase {
             competition_id VARCHAR(255) NOT NULL,
             athlete VARCHAR(255) NOT NULL,
             result FLOAT NOT NULL,
-            tries INT NOT NULL DEFAULT 1,
+            remaining_attempts INT NOT NULL DEFAULT 1,
             FOREIGN KEY (competition_id) REFERENCES ${CompetitionDatabase.TABLE_COMPETITIONS}(id)
         );
     `);

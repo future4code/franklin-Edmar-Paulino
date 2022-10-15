@@ -28,7 +28,7 @@ class CompetitionDatabase extends BaseDatabase {
             id: competitionResult.getId(),
             athlete: competitionResult.getAthlete(),
             result: competitionResult.getResult(),
-            tries: competitionResult.getTries()            
+            remaining_attempts: competitionResult.getRemainingAttempts()            
         };
 
         return competitionResultDB;

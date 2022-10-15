@@ -55,7 +55,7 @@ export interface ICompetitionResultDB {
     competition_id: string,
     athlete: string,
     result: number,
-    tries: number
+    remaining_attempts: number
 }
 
 export interface IStatusCode {
@@ -86,7 +86,7 @@ export class CompetitionResult {
         private competitionId: string,
         private athlete: string,
         private result: number,
-        private tries: number
+        private remainingAttempts: number
     ) {}
 
     public getId = (): string => this.id;
@@ -97,5 +97,5 @@ export class CompetitionResult {
 
     public getResult = (): number => this.result;
 
-    public getTries = (): number => this.tries;
+    public getRemainingAttempts = (): number => this.remainingAttempts;
 }

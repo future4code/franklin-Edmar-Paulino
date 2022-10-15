@@ -75,8 +75,8 @@ class CompetitionBusiness {
         }
 
         const id: string = this.idGenerator.generate();
-        const tries: number = competitionDB.type === COMPETITION_TYPE.DART ? 2 : 0;
-        const competitionResult: CompetitionResult = new CompetitionResult(id, competitionId, athlete, result, tries);
+        const remainingAttempts: number = competitionDB.type === COMPETITION_TYPE.DART ? 2 : 0;
+        const competitionResult: CompetitionResult = new CompetitionResult(id, competitionId, athlete, result, remainingAttempts);
         await this.competitionDatabase.createCompetitionResult(competitionResult);
 
         const output: IIDOutputDTO = { id };
@@ -104,7 +104,7 @@ class CompetitionBusiness {
             throw new Error("ID do resultado não encontrado");
         }
 
-        if (competitionResultDB.tries === 0) {
+        if (competitionResultDB.remaining_attempts === 0) {
             statusCode.code = 400;
             throw new Error("Não há tentativas restantes");
         }
@@ -114,7 +114,7 @@ class CompetitionBusiness {
             competitionResultDB.competition_id,
             competitionResultDB.athlete,
             newResult > competitionResultDB.result ? newResult : competitionResultDB.result,
-            competitionResultDB.tries - 1
+            competitionResultDB.remaining_attempts - 1
         );
 
         const affectedRows: number = await this.competitionDatabase.updateCompetitionResult(competitionResult);
@@ -124,7 +124,7 @@ class CompetitionBusiness {
             throw new Error("O número de tentativas não foi atualizado");
         }
 
-        const output: IMessageOutputDTO = { message: `Resultado atualizado com sucesso. Tentativas restantes ${competitionResult.getTries()}` };
+        const output: IMessageOutputDTO = { message: `Resultado atualizado com sucesso. Tentativas restantes ${competitionResult.getRemainingAttempts()}` };
 
         return output;
     };
