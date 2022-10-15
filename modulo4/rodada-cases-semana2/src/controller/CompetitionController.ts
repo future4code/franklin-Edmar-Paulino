@@ -18,8 +18,8 @@ class CompetitionController {
                 name: req.body.name,
                 type: req.body.type
             };
-            const result: IIDOutputDTO = await this.competitionBusiness.createCompetition(input);
-            res.status(200).send(result);
+            const output: IIDOutputDTO = await this.competitionBusiness.createCompetition(input);
+            res.status(200).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);
@@ -42,11 +42,11 @@ class CompetitionController {
             const input: IRegisterCompetitionResultInputDTO = {
                 competitionId: req.params.id,
                 athlete: req.body.athlete,
-                value: req.body.value
+                result: req.body.result
             };
-            const result: IIDOutputDTO = await this.competitionBusiness.registerCompetitionResult(input);
+            const output: IIDOutputDTO = await this.competitionBusiness.registerCompetitionResult(input);
 
-            res.status(200).send(result);
+            res.status(200).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);
@@ -68,11 +68,11 @@ class CompetitionController {
         try {
             const input: IRegisterNewTryInputDTO = {
                 id: req.params.id,
-                newValue: req.body.newValue
+                newResult: req.body.newResult
             }
-            const result: IMessageOutputDTO = await this.competitionBusiness.updateNumberOfTries(input);
+            const output: IMessageOutputDTO = await this.competitionBusiness.updateNumberOfTries(input);
 
-            res.status(200).send(result);
+            res.status(200).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);
@@ -93,9 +93,9 @@ class CompetitionController {
     public finishCompetition = async (req: Request, res: Response): Promise<void> => {
         try {
             const input: IIDInputDTO = { id: req.params.id };
-            const result: IMessageOutputDTO = await this.competitionBusiness.finishCompetiton(input);
+            const output: IMessageOutputDTO = await this.competitionBusiness.finishCompetition(input);
 
-            res.status(200).send(result);
+            res.status(200).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);
@@ -116,9 +116,9 @@ class CompetitionController {
     public getCompetitionRanking = async (req: Request, res: Response): Promise<void> => {
         try {
             const input: IIDInputDTO = { id: req.params.id };
-            const result: IRankingOutputDTO = await this.competitionBusiness.getCompetitionRanking(input);
+            const output: IRankingOutputDTO = await this.competitionBusiness.getCompetitionRanking(input);
 
-            res.status(200).send(result);
+            res.status(200).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);

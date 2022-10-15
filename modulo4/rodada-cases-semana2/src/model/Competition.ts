@@ -11,22 +11,24 @@ export interface ICreateCompetitionInputDTO {
 export interface IRegisterCompetitionResultInputDTO {
     competitionId: string,
     athlete: string,
-    value: number
+    result: number
+}
+
+export interface IRanking {
+    id: string,
+    name: string,
+    result: number
 }
 
 export interface IRankingOutputDTO {
     name: string,
     finished: boolean,
-    ranking: {
-        id: string,
-        name: string,
-        result: number
-    }[]
+    ranking: IRanking[]
 }
 
 export interface IRegisterNewTryInputDTO {
     id: string,
-    newValue: number
+    newResult: number
 }
 
 export interface IIDInputDTO {
@@ -83,7 +85,7 @@ export class CompetitionResult {
         private id: string,
         private competitionId: string,
         private athlete: string,
-        private value: number,
+        private result: number,
         private tries: number
     ) {}
 
@@ -93,7 +95,7 @@ export class CompetitionResult {
 
     public getAthlete = (): string => this.athlete;
 
-    public getValue = (): number => this.value;
+    public getResult = (): number => this.result;
 
     public getTries = (): number => this.tries;
 }

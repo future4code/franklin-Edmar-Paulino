@@ -1,4 +1,4 @@
-import { Competition, CompetitionResult, ICompetitionDB, ICompetitionResultDB } from "../model/Competition";
+import { Competition, CompetitionResult, ICompetitionDB, ICompetitionResultDB, IRanking } from "../model/Competition";
 import BaseDatabase from "./BaseDatabase";
 
 class CompetitionDatabase extends BaseDatabase {
@@ -21,7 +21,7 @@ class CompetitionDatabase extends BaseDatabase {
             competition_id: competitionResult.getCompetitionId(),
             id: competitionResult.getId(),
             athlete: competitionResult.getAthlete(),
-            result: competitionResult.getValue(),
+            result: competitionResult.getResult(),
             tries: competitionResult.getTries()            
         };
 
@@ -70,6 +70,15 @@ class CompetitionDatabase extends BaseDatabase {
             .where({ id: competitionDB.id });
 
         return Number(affectedRows);
+    };
+
+    public getCompetitionResultsOrdered = async (competition_id: string, direction: string): Promise<IRanking[]> => {
+        const result: any = await BaseDatabase.connection(CompetitionDatabase.TABLE_RESULTS)
+            .select("id", "athlete", "result")
+            .where({ competition_id })
+            .orderBy("result", direction);
+        
+        return result as IRanking[];
     };
 }
 

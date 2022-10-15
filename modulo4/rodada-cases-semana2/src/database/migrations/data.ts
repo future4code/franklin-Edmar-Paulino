@@ -19,21 +19,21 @@ export const results: ICompetitionResultDB[] = [
     {
         id: "d98ecd2d-a77d-4004-8ec7-371a6d839229",
         competition_id: "f77d0fc1-e102-4075-850c-dd0fb5852f98",
-        athlete: "Astro Dev",
+        athlete: "Eliud Kipchoge",
         result: 20.5,
         tries: 0
     },
     {
         id: "87e296be-a385-4ae6-8d51-ef546ac5a093",
         competition_id: "f77d0fc1-e102-4075-850c-dd0fb5852f98",
-        athlete: "Cosmo Dev",
+        athlete: "Tamirat Tola",
         result: 19.3,
         tries: 0
     },
     {
         id: "c2418710-3de8-4c23-8db7-1b4e5b5d1267",
         competition_id: "f77d0fc1-e102-4075-850c-dd0fb5852f98",
-        athlete: "Star Dev",
+        athlete: "Mosinet Geremew",
         result: 20.7,
         tries: 0
     },

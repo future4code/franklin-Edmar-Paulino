@@ -1,41 +1,41 @@
-# @name Create
+# @name CreateCompetition
 POST http://localhost:3003/competition
 Content-Type: application/json
 
 {
-    "name": "Chico Run World Tour",
-    "type": "HUNDRED_DASH"
+    "name": "Right in the bull's-eye Tour",
+    "type": "DART"
 }
 
 ###
 
-# @name Result
-POST http://localhost:3003/competition/4a50c06f-9787-41c4-840f-407bd5b45df6
+# @name RegisterCompetitionResult
+POST http://localhost:3003/competition/e7be6f36-d9ad-4a14-9b36-b37d7eacab3f
 Content-Type: application/json
 
 {
-    "athlete": "Chiquinho Feliz",
-    "value": 99
+    "athlete": "Aileen de Graaf",
+    "result": 125
 }
 
 ###
 
-# @name registerNewTry
-PUT http://localhost:3003/result/f6d0bba4-1892-4340-a280-c63cb0245309
+# @name RegisterNewTry
+PUT http://localhost:3003/result/53fd9300-c4fb-434b-9284-54be2b5d76a0
 Content-Type: application/json
 
 {
-    "newValue": 97
+    "newResult": 125
 }
 
 ###
 
-# @name Finish
+# @name FinishCompetition
 PUT http://localhost:3003/competition/4a50c06f-9787-41c4-840f-407bd5b45df6/finish
 Content-Type: application/json
 
 ###
 
-# @name Ranking
-GET http://localhost:3003/competition/1/ranking
+# @name GetCompetitionRanking
+GET http://localhost:3003/competition/e7be6f36-d9ad-4a14-9b36-b37d7eacab3f/ranking
 Content-Type: application/json

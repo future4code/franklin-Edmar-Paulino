@@ -1,6 +1,6 @@
 import { statusCode } from "../controller/CompetitionController";
 import CompetitionDatabase from "../database/CompetitionDatabase";
-import { Competition, COMPETITION_TYPE, ICreateCompetitionInputDTO, IIDOutputDTO, IRegisterCompetitionResultInputDTO, CompetitionResult, ICompetitionDB, IIDInputDTO, IMessageOutputDTO, ICompetitionResultDB, IRegisterNewTryInputDTO, IRankingOutputDTO } from "../model/Competition";
+import { Competition, COMPETITION_TYPE, ICreateCompetitionInputDTO, IIDOutputDTO, IRegisterCompetitionResultInputDTO, CompetitionResult, ICompetitionDB, IIDInputDTO, IMessageOutputDTO, ICompetitionResultDB, IRegisterNewTryInputDTO, IRankingOutputDTO, IRanking } from "../model/Competition";
 import IdGenerator from "../services/IdGenerator";
 
 class CompetitionBusiness {
@@ -25,13 +25,13 @@ class CompetitionBusiness {
         const id: string = this.idGenerator.generate();
         const competition: Competition = new Competition(id, name, type);
         await this.competitionDatabase.createCompetition(competition);
-        const result: IIDOutputDTO = { id };
+        const output: IIDOutputDTO = { id };
         
-        return result;
+        return output;
     };
 
     public registerCompetitionResult = async (input: IRegisterCompetitionResultInputDTO): Promise<IIDOutputDTO> => {
-        const { competitionId, athlete, value } = input;
+        const { competitionId, athlete, result } = input;
 
         if (!competitionId || typeof competitionId !== "string") {
             statusCode.code = 400;
@@ -43,9 +43,9 @@ class CompetitionBusiness {
             throw new Error("Parâmetro 'athlete' inválido");
         }
 
-        if (!value || typeof value !== "number") {
+        if (!result || typeof result !== "number") {
             statusCode.code = 400;
-            throw new Error("Parâmetro 'value' inválido");
+            throw new Error("Parâmetro 'result' inválido");
         }
 
         const competitionDB: ICompetitionDB = await this.competitionDatabase.getCompetitionById(competitionId);
@@ -62,23 +62,23 @@ class CompetitionBusiness {
 
         const id: string = this.idGenerator.generate();
         const tries: number = competitionDB.type === COMPETITION_TYPE.DART ? 2 : 0;
-        const competitionResult: CompetitionResult = new CompetitionResult(id, competitionId, athlete, value, tries);
+        const competitionResult: CompetitionResult = new CompetitionResult(id, competitionId, athlete, result, tries);
         await this.competitionDatabase.createCompetitionResult(competitionResult);
 
-        const result: IIDOutputDTO = { id };
+        const output: IIDOutputDTO = { id };
 
-        return result;
+        return output;
     };
 
     public updateNumberOfTries = async (input: IRegisterNewTryInputDTO): Promise<IMessageOutputDTO> => {
-        const { id, newValue } = input;
+        const { id, newResult } = input;
 
         if (!id || typeof id !== "string") {
             statusCode.code = 400;
             throw new Error("ID do resultado não informado");
         }
 
-        if (!newValue || typeof newValue !== "number") {
+        if (!newResult || typeof newResult !== "number") {
             statusCode.code = 400;
             throw new Error("Parâmetro 'newValue' inválido!");
         }
@@ -99,7 +99,7 @@ class CompetitionBusiness {
             id,
             competitionResultDB.competition_id,
             competitionResultDB.athlete,
-            newValue > competitionResultDB.result ? newValue : competitionResultDB.result,
+            newResult > competitionResultDB.result ? newResult : competitionResultDB.result,
             competitionResultDB.tries - 1
         );
 
@@ -110,12 +110,12 @@ class CompetitionBusiness {
             throw new Error("O número de tentativas não foi atualizado");
         }
 
-        const result: IMessageOutputDTO = { message: `Resultado atualizado com sucesso. Tentativas restantes ${competitionResult.getTries()}` };
+        const output: IMessageOutputDTO = { message: `Resultado atualizado com sucesso. Tentativas restantes ${competitionResult.getTries()}` };
 
-        return result;
+        return output;
     };
 
-    public finishCompetiton = async (input: IIDInputDTO): Promise<IMessageOutputDTO> => {
+    public finishCompetition = async (input: IIDInputDTO): Promise<IMessageOutputDTO> => {
         const { id } = input;
 
         if (!id || typeof id !== "string") {
@@ -148,13 +148,41 @@ class CompetitionBusiness {
             throw new Error("Competição não finalizada");
         }
 
-        const result: IMessageOutputDTO = { message: "Competição finalizada com sucesso" };
+        const output: IMessageOutputDTO = { message: "Competição finalizada com sucesso" };
 
-        return result;
+        return output;
     };
 
     public getCompetitionRanking = async (input: IIDInputDTO): Promise<IRankingOutputDTO> => {
-        return {} as IRankingOutputDTO;
+        const { id } = input;
+
+        if (!id || typeof id !== "string") {
+            statusCode.code = 400;
+            throw new Error("ID da competição não informado");
+        }
+
+        const competitionDB: ICompetitionDB = await this.competitionDatabase.getCompetitionById(id);
+
+        if (!competitionDB) {
+            statusCode.code = 404;
+            throw new Error("Competição não encontrada");
+        }
+
+        const direction: string = competitionDB.type === COMPETITION_TYPE.HUNDRED_DASH ? "ASC" : "DESC";
+        const ranking: IRanking[] = await this.competitionDatabase.getCompetitionResultsOrdered(id, direction);
+
+        if (!ranking) {
+            statusCode.code = 400;
+            throw new Error("Não foi possível carregar o ranking");
+        }
+
+        const output: IRankingOutputDTO = {
+            name: competitionDB.name,
+            finished: Boolean(competitionDB.finished),
+            ranking
+        };
+
+        return output;
     };
 }
 
