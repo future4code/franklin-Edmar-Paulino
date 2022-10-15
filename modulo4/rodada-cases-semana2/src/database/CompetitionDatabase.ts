@@ -1,5 +1,11 @@
-import { Competition, CompetitionResult, ICompetitionDB, ICompetitionResultDB, IRanking } from "../model/Competition";
 import BaseDatabase from "./BaseDatabase";
+import {
+    Competition,
+    CompetitionResult,
+    ICompetitionDB,
+    ICompetitionResultDB,
+    IRanking
+} from "../model/Competition";
 
 class CompetitionDatabase extends BaseDatabase {
     public static TABLE_COMPETITIONS = "Olympics_Competitions";

@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import CompetitionBusiness from "../business/CompetitionBusiness";
-import { ICreateCompetitionInputDTO, IIDInputDTO, IRegisterNewTryInputDTO, IIDOutputDTO, IMessageOutputDTO, IRegisterCompetitionResultInputDTO, IStatusCode, IRankingOutputDTO } from "../model/Competition";
+import { 
+    ICreateCompetitionInputDTO,
+    IIDInputDTO,
+    IRegisterNewTryInputDTO,
+    IIDOutputDTO,
+    IMessageOutputDTO,
+    IRegisterCompetitionResultInputDTO,
+    IStatusCode,
+    IRankingOutputDTO
+} from "../model/Competition";
 
 export const statusCode: IStatusCode = {
     code: 200,

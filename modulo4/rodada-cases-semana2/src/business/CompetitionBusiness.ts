@@ -1,7 +1,21 @@
 import { statusCode } from "../controller/CompetitionController";
 import CompetitionDatabase from "../database/CompetitionDatabase";
-import { Competition, COMPETITION_TYPE, ICreateCompetitionInputDTO, IIDOutputDTO, IRegisterCompetitionResultInputDTO, CompetitionResult, ICompetitionDB, IIDInputDTO, IMessageOutputDTO, ICompetitionResultDB, IRegisterNewTryInputDTO, IRankingOutputDTO, IRanking } from "../model/Competition";
 import IdGenerator from "../services/IdGenerator";
+import {
+    Competition,
+    COMPETITION_TYPE,
+    ICreateCompetitionInputDTO,
+    IIDOutputDTO,
+    IRegisterCompetitionResultInputDTO,
+    CompetitionResult,
+    ICompetitionDB,
+    IIDInputDTO,
+    IMessageOutputDTO,
+    ICompetitionResultDB,
+    IRegisterNewTryInputDTO,
+    IRankingOutputDTO,
+    IRanking
+} from "../model/Competition";
 
 class CompetitionBusiness {
     constructor(
