@@ -28,7 +28,7 @@ class CompetitionController {
                 type: req.body.type
             };
             const output: IIDOutputDTO = await this.competitionBusiness.createCompetition(input);
-            res.status(200).send(output);
+            res.status(201).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);
@@ -55,7 +55,7 @@ class CompetitionController {
             };
             const output: IIDOutputDTO = await this.competitionBusiness.registerCompetitionResult(input);
 
-            res.status(200).send(output);
+            res.status(201).send(output);
         } catch(err: unknown) {
             if (err instanceof Error) {
                 console.error(err);
