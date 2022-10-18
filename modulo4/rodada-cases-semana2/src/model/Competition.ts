@@ -16,7 +16,7 @@ export interface IRegisterCompetitionResultInputDTO {
 
 export interface IRanking {
     id: string,
-    name: string,
+    athlete: string,
     result: number
 }
 
