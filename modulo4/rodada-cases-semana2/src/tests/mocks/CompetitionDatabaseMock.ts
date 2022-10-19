@@ -15,7 +15,9 @@ class CompetitionDatabaseMock {
         private isGetCompetitionByIdReturnNull: boolean = false,
         private isGetCompetitionResultByIdReturnNull: boolean = false,
         private isGetCompetitionResultsOrderedReturnNull: boolean = false,
-        private competititonStatus: boolean = false
+        private competititonStatus: boolean = false,
+        private competitionResultRemainingAttempts: number = 1,
+        private affectedRows: number = 1
     ){}
 
     public toCompetitionDBModel = (competition: Competition): ICompetitionDB => {
@@ -58,7 +60,7 @@ class CompetitionDatabaseMock {
             competition_id: "f77d0fc1-e102-4075-850c-dd0fb5852f98",
             athlete: "Eliud Kipchoge",
             result: 20.5,
-            remaining_attempts: 0
+            remaining_attempts: this.competitionResultRemainingAttempts
         };
 
         return this.isGetCompetitionResultByIdReturnNull ? null : competitionResult;
@@ -68,9 +70,9 @@ class CompetitionDatabaseMock {
 
     public createCompetitionResult = async (newCompetitionResult: CompetitionResult): Promise<void> => {};
 
-    public updateCompetitionResult = async (competitionResult: CompetitionResult): Promise<number> => 1;
+    public updateCompetitionResult = async (competitionResult: CompetitionResult): Promise<number> => this.affectedRows;
 
-    public updateCompetition = async (competition: Competition): Promise<number> => 1;
+    public updateCompetition = async (competition: Competition): Promise<number> => this.affectedRows;
 
     public getCompetitionResultsOrdered = async (competition_id: string, direction: string): Promise<IRanking[]> => {
         const result: any = [
