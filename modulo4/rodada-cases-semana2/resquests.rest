@@ -1,0 +1,41 @@
+# @name CreateCompetition
+POST http://localhost:3003/competition
+Content-Type: application/json
+
+{
+    "name": "Right in the bull's-eye Tour",
+    "type": "DART"
+}
+
+###
+
+# @name RegisterCompetitionResult
+POST http://localhost:3003/competition/e7be6f36-d9ad-4a14-9b36-b37d7eacab3f
+Content-Type: application/json
+
+{
+    "athlete": "Aileen de Graaf",
+    "result": 125
+}
+
+###
+
+# @name RegisterNewTry
+PUT http://localhost:3003/result/53fd9300-c4fb-434b-9284-54be2b5d76a0
+Content-Type: application/json
+
+{
+    "newResult": 125
+}
+
+###
+
+# @name FinishCompetition
+PUT http://localhost:3003/competition/4a50c06f-9787-41c4-840f-407bd5b45df6/finish
+Content-Type: application/json
+
+###
+
+# @name GetCompetitionRanking
+GET http://localhost:3003/competition/e7be6f36-d9ad-4a14-9b36-b37d7eacab3f/ranking
+Content-Type: application/json
